@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 require 'updater.php';
 $updated = false;
 
-if ( $latestVersion  = JRequest::getInt('update') )
+if ( $latestVersion  = JRequest::getFloat('update') )
 {
 	$updater = new Updater();
 	if ( $latestVersion == $updater->newVersionAvailable() ) 
