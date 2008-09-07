@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jdeveloper" default="build">
+	
+	<property name="base_dir" value="." />
+	<property name="component" value="com_jdeveloper" />
+	
+	<!-- Flush the old packages -->
+	<target name="flush">
+		<delete>
+			<fileset dir="${base_dir}/packages">
+			    <include name="com_jdeveloper.zip" />
+			</fileset>
+		</delete>
+	</target>
+	
+	<!-- Package the Component -->
+	<target name="package_component">
+						<!-- make zip file -->
+		<zip destfile="${base_dir}/packages/${component}.zip">
+		 	<fileset dir="${basedir}/components/${component}">
+				 <include name="**/**" />
+		 	</fileset>
+		</zip>
+	</target>
+	
+	
+	<!-- Build -->
+	<target name="build" depends="flush, package_component">
+		<echo message="eBlast Elements have been built successfully" />
+	</target>
+</project>
