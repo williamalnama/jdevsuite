@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Updater
 {
-	private $updateURL = 'https://jdevsuite.googlecode.com/svn/trunk/packages/';
+	private $updateURL = 'http://jdevsuite.googlecode.com/svn/trunk/packages/releases/';
 	private $latestVersion = null;
 	private $latestVersionFile = null;
 
