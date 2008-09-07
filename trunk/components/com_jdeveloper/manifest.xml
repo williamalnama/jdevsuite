@@ -18,7 +18,6 @@
             <file>jdeveloper.php</file>
             <folder>controllers</folder>
             <folder>core</folder>
-            <folder>install</folder>
             <folder>models</folder>
             <folder>templates</folder>
             <folder>views</folder>
