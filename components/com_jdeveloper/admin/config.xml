@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <version>0.9</version>
+    <version>0.92</version>
     <devfolder>/Users/asanieyan/Sites/jeblast/jdevfolder</devfolder>
     <migration>0</migration>
 </config>
