@@ -12,8 +12,8 @@
     <administration>
         <menu>Joomla Developer</menu>
         <files folder="admin">
-            <file>.DS_Store</file>
-            <file>config.xml</file>
+            <file>updater.xml</file>
+			<file>config.xml</file>
             <file>index.html</file>
             <file>jdeveloper.php</file>
             <folder>controllers</folder>
