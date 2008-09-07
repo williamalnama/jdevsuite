@@ -3,14 +3,10 @@
 	
 	<property name="base_dir" value="." />
 	<property name="component" value="com_jdeveloper" />
-	<condition property="version"  >
-		<isset property="version" />
-	</condition>
 	
 	<condition property="release"  >
 		<and>
 			<isset property="version" />
-			<isset property="release" />
 		</and>
 	</condition>
 	
@@ -50,7 +46,7 @@
 	
 	<target name="release" if="release" depends="package"> 
 		<echo message="packaging release for ${version}" />
-		<copy file="${base_dir}/packages/com_jdeveloper.zip" tofile="${base_dir}/packages/com_jdeveloper_${version}.zip"
+		<copy file="${base_dir}/packages/releases/com_jdeveloper.zip" tofile="${base_dir}/packages/releases/com_jdeveloper_${version}.zip" />
 	</target>
 	
 	<!-- Build -->
