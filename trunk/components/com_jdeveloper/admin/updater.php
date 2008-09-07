@@ -29,7 +29,7 @@ class Updater
 		
 		JArchive::extract( $tmp_dest.DS.$p_file, $tmp_update_folder);
 			
-		$tmp_update_folder .= DS.'com_jdeveloper'.DS.'admin';
+		$tmp_update_folder .= DS.'admin';
 		foreach(JFolder::folders($tmp_update_folder) as $folder)	
 		{
 			$tmpFolder = $tmp_update_folder.DS.$folder;
