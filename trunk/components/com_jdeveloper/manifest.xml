@@ -12,9 +12,9 @@
     <administration>
         <menu>Joomla Developer</menu>
         <files folder="admin">
-            <file>updater.xml</file>
 			<file>config.xml</file>
             <file>index.html</file>
+            <file>updater.php</file>
             <file>jdeveloper.php</file>
             <folder>controllers</folder>
             <folder>core</folder>
