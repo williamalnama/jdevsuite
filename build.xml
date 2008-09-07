@@ -23,35 +23,38 @@
 		</delete>
 	</target>
 	
+	<target name="copy">
+		<copy todir="${base_dir}/tmp" >
+			<fileset dir="${base_dir}/components/${component}">
+				<include name="**/*.*" />
+				<include name="site" />
+				<exclude name="admin/config.xml" />
+				<exclude name="admin/config.default.xml" />				
+		  	</fileset>		  	
+		</copy>
+		<copy file="${base_dir}/components/${component}/admin/config.default.xml" tofile="${base_dir}/tmp/admin/config.xml"/>
+		
+		
+	</target>
+	
 	<!-- Package the Component -->
-	<target name="package_component">
+	<target name="package" depends="flush, copy">
 						<!-- make zip file -->
 		<zip destfile="${base_dir}/packages/${component}.zip">
-		 	<fileset dir="${basedir}/components/${component}">
-				 <include name="**/**" />
+		 	<fileset dir="${base_dir}/tmp">
+				 <include name="**/**" />				 
 		 	</fileset>
 		</zip>
+		<delete dir="${base_dir}/tmp" />
 	</target>
 	
-	<target name="nightbuild" if="version" > 
-		<echo message="packaging with version number : ${version}" />
-		<zip destfile="${base_dir}/packages/${component}_${version}.zip">
-		 	<fileset dir="${basedir}/components/${component}">
-				 <include name="**/**" />
-		 	</fileset>
-		</zip>		
-	</target>
-	
-	<target name="release" if="release" > 
+	<target name="release" if="release" depends="package"> 
 		<echo message="packaging release for ${version}" />
-		<zip destfile="${base_dir}/packages/releases/${component}_${version}.zip">
-		 	<fileset dir="${basedir}/components/${component}">
-				 <include name="**/**" />
-		 	</fileset>
-		</zip>		
-	</target>	
+		<copy file="${base_dir}/packages/com_jdeveloper.zip" tofile="${base_dir}/packages/com_jdeveloper_${version}.zip"
+	</target>
+	
 	<!-- Build -->
-	<target name="build" depends="flush, package_component, nightbuild,release">
+	<target name="build" depends="package">
 		<echo message="JDeveloper Elements have been built successfully" />
 
 	</target>
