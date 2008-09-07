@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 	$bar = JToolBar::getInstance('toolbar');
-
+	JToolBarHelper::title( JText::_( 'Components' ) );	
 	$url = urlFor(array('task'=>'create','type'=>$this->model->type));
 	$js  = sprintf("javascript:if (name = prompt('Enter the %s name')){ document.location = '%s&name='+name}",$this->model->getHumanName(),$url);
 	$bar->appendButton('Link', 'new', sprintf("Add New Component",$this->model->getHumanName()), $js);

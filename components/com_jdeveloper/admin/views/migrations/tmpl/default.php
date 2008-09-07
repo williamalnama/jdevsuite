@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+	JToolBarHelper::title( JText::_( 'Migrations' ) );	
 	$bar = JToolBar::getInstance('toolbar');
 	$url = urlFor(array('task'=>'addMigration'));
 	$js  = sprintf("javascript:if (name = prompt('Enter the migration name')){ document.location = '%s&name='+name}",$url);
