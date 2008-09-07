@@ -33,7 +33,7 @@
 		</zip>
 	</target>
 	
-	<target name="set_version" if="version" > 
+	<target name="nightbuild" if="version" > 
 		<echo message="packaging with version number : ${version}" />
 		<zip destfile="${base_dir}/packages/${component}_${version}.zip">
 		 	<fileset dir="${basedir}/components/${component}">
@@ -51,7 +51,7 @@
 		</zip>		
 	</target>	
 	<!-- Build -->
-	<target name="build" depends="flush, package_component, set_version,release">
+	<target name="build" depends="flush, package_component, nightbuild,release">
 		<echo message="JDeveloper Elements have been built successfully" />
 
 	</target>

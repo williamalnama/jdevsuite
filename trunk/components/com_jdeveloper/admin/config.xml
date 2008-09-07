@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <version>0.9</version>
-    <devfolder>/Users/asanieyan/Sites/jeblast/administrator/components/com_jdeveloper/jdevfolder</devfolder>
+    <version>0.9.1</version>
     <migration>0</migration>
 </config>

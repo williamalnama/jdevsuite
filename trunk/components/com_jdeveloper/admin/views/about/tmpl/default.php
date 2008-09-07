@@ -11,17 +11,17 @@
 		<table class="admintable" cellspacing="1">
 			<tr>
 				<td width="150" class="key"><?php echo JText::_('NAME'); ?></td>
-				<td>eBlast Campaing Management System</td>
+				<td>Joomla Developer Suite</td>
 			</tr>
 			
 			<tr>
 				<td class="key"><?php echo JText::_('Start Date'); ?></td>
-				<td>Aug 2008</td>
+				<td>Sep 2008</td>
 			</tr>
 			
 			<tr>
 				<td class="key"><?php echo JText::_('COPYRIGHT'); ?></td>
-				<td>&copy; <?php echo date('Y'); ?> - rmd Studio Inc. - PeerGlobe Technology Inc. - St. John Inc.</td>
+				<td>&copy; <?php echo date('Y'); ?> - rmd Studio Inc. - PeerGlobe Technology Inc.</td>
 			</tr>
 			
 			<tr>
@@ -31,30 +31,7 @@
 		</table>
 	</fieldset>
 	
-	<fieldset class="adminform">
-	<legend><?php echo JText::_( 'Project Sponsor' ); ?></legend>
-	<table class="admintable" cellspacing="1">
-			<tr>
-				<td width="150" class="key"><?php echo JText::_('NAME'); ?></td>
-				<td>Elliot NG</td>
-			</tr>
-			
-			<tr>
-				<td class="key"><?php echo JText::_('Role'); ?></td>
-				<td>Communication Architect</td>
-			</tr>
-			
-			<tr>
-				<td class="key"><?php echo JText::_('Company'); ?></td>
-				<td>St. John Inc. ( <a target="_blank" href="http://www.sjohn.com">www.sjohn.com</a> ) - The Communication Architects</td>
-			</tr>
-			
-			<tr>
-				<td class="key"><?php echo JText::_('EMAIL'); ?></td>
-				<td><a href="mailto:info@sjohn.com">info@sjohn.com</a></td>
-			</tr>
-		</table>
-	</fieldset>
+
 	
 
 <fieldset class="adminform">

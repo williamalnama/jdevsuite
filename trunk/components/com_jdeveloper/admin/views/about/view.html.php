@@ -2,4 +2,4 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class eblastViewAbout extends JView {}
+class ViewAbout extends ComponentView {}

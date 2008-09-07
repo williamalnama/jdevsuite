@@ -13,9 +13,10 @@ class ComponentView extends JView
 		
 		JSubMenuHelper::addEntry( 'Migrations',	urlfor(array('controller'=>'migrations')), 	($controller == 'migrations'));
 		JSubMenuHelper::addEntry( 'Components',	urlfor(array('ext'=>'component','controller'=>'extensionhandler')), 	($ext == 'components'));
-		JSubMenuHelper::addEntry( 'Modules',	urlfor(array('ext'=>'module','controller'=>'extensionhandler')), 	($ext == 'module'));
-		JSubMenuHelper::addEntry( 'Plugins',	urlfor(array('ext'=>'plugin','controller'=>'extensionhandler')), 	($ext == 'plugin'));				
+//		JSubMenuHelper::addEntry( 'Modules',	urlfor(array('ext'=>'module','controller'=>'extensionhandler')), 	($ext == 'module'));
+//		JSubMenuHelper::addEntry( 'Plugins',	urlfor(array('ext'=>'plugin','controller'=>'extensionhandler')), 	($ext == 'plugin'));				
 		JSubMenuHelper::addEntry( 'Configuration',	urlfor(array('controller'=>'config')), 	($controller == 'config'));
+		JSubMenuHelper::addEntry( 'About',	urlfor(array('controller'=>'about')), 	($controller == 'about'));		
 	}	
 	public final function __construct()
 	{
