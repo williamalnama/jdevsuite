@@ -207,7 +207,7 @@ class MySQLTable
 						
 		$this->indices = implode(",\n\t",$this->indices);
 		
-		$q = sprintf("CREATE TABLE `%s` (\n\t%s\n\n\t%s\n\n) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`",
+		$q = sprintf("CREATE TABLE `%s` (\n\t%s\n\n\t%s\n) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`",
 					$this->name,
 					$this->cols,
 					$this->indices);
