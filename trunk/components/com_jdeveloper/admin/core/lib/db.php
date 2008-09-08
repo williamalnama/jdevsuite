@@ -1,6 +1,48 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+class PerfomedQueries
+{
+	static $queries = array();
+	static function captureLastQuery()
+	{
+		$db = JFactory::getDBO();
+
+		self::capture($db->getQuery(),$db->getErrorMsg());
+	}
+	static function capture($q,$error=null)	
+	{
+		$session  = JFactory::getSession();
+		$performedQueries = $session->get('performed_queries');
+		
+		if ( !$performedQueries )
+			$performedQueries = array();
+			
+		$db = JFactory::getDBO();
+		$q  = str_replace($db->_table_prefix,'#__',$q);
+		
+		$performedQueries[] = array($q,$error);
+		
+		$session->set('performed_queries',$performedQueries);
+		
+	}
+	static function clear()
+	{		
+		JFactory::getSession()->set('performed_queries',array());		
+	}
+	static function get()
+	{		
+		$session  = JFactory::getSession();
+		$performedQueries = $session->get('performed_queries');
+		
+		if ( !$performedQueries )
+			$performedQueries = array();
+
+		return $performedQueries;
+	}
+	
+}
+
 function jdb()
 {
 	$args = func_get_args();
@@ -14,7 +56,7 @@ function jdb()
 	if ($q) {
 		
 		$db->execute($q);
-		JError::raiseNotice(500,str_replace($db->_table_prefix,'#__',$q));
+		PerfomedQueries::captureLastQuery();
 		
 		if ($db->getErrorMsg())
 			JError::raiseWarning(500,$db->getErrorMsg());
@@ -47,6 +89,12 @@ class MySQLTable
 			$object = $array;
 		
 		$db->insertObject($this->name,$object,$this->pk);
+		
+		PerfomedQueries::captureLastQuery();
+		
+		if ($db->getErrorMsg())
+			JError::raiseWarning(500,$db->getErrorMsg());
+		
 	}
 	public function __construct($tableName)
 	{
