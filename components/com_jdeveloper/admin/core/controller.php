@@ -7,9 +7,9 @@ class ComponentController extends JController
 	public function __construct()
 	{
 		parent::__construct();
-		if ( !$this->getModel('config')->devFolderExists() && strtolower(JRequest::getString('task')) != 'setdevfolder' ){
+		if ( !$this->getModel('config')->devFolderExists() && strtolower(JRequest::getString('controller')) != 'config' ){
 			
-			$this->setRedirect(array('controller'=>'config','task'=>'setDevFolder'));
+			$this->setRedirect(array('controller'=>'config'));
 		}
 			
 	}
@@ -18,7 +18,7 @@ class ComponentController extends JController
   	{  
 		if ($url == 'back')
 			$url = @$_SERVER['HTTP_REFERER'];
-			
+	
 		return parent::setRedirect(urlFor($url),$msg,$type);
   	}
 	public function assign($vars=array())

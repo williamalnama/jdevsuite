@@ -19,7 +19,8 @@ class Component
 		
 		JFolder::create($folder);
 		JFolder::create($folder.DS.'admin');
-		JFolder::create($folder.DS.'site');	
+		JFolder::create($folder.DS.'site');
+		JPath::setPermissions($folder,'0777','0777');	
 		template('manifest')->copy($folder.DS.'manifest.xml',array('name'=>$name,'creationDate'=>date('Y:m')));
 		return new Component($option,$baseFolder);		
 	}

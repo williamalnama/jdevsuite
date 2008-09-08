@@ -22,8 +22,10 @@ class ModelExtensionHandler extends JModel
 	public function getFolder()
 	{
 		$folder = $this->config->getDevFolder().DS.$this->type.'s';
-		if ( !JFolder::exists($folder) );
-			JFolder::create($folder,'0777');
+		if ( !JFolder::exists($folder) ) {
+			JFolder::create($folder);
+			JPath::setPermissions($folder,'0777','0777');
+		}
 		return $folder;
 	}
 	public function create($name)

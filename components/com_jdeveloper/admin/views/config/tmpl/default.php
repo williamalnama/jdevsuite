@@ -2,7 +2,7 @@
 	defined('_JEXEC') or die('Restricted access');
 	JToolBarHelper::title( JText::_( 'Configuration' ) );		
 ?>
-<form >
+<form method='POST' >
 	<div class="col ">
 	<fieldset>
 			<legend><?php echo JText::_('Dev Folder'); ?></legend>
@@ -25,11 +25,13 @@
 						<?php if ( $this->config->devFolderExists() ) : ?>
 							<input id="dev_field" size="70" type="text" name="dev_dir" value="" />						
 							<input type='submit' value='Move folder' />
+							<input type='hidden'  name='task'  value='changeDevFolder'/>
 						<?php else : ?>
 							<input id="dev_field" size="70" type="text" name="dev_dir" value="<?php print $this->config->getDevFolder() ?>" />												
 							<input type='submit' value='Create' />						
+							<input type='hidden'  name='task'  value='setDevFolder' />
 						<?php endif; ?>
-						<input type='hidden'  name='task'  value='setDevFolderPosted'/>						
+						
 						<input type='hidden'  name='controller' value='config'/>
 						<input type='hidden'  name='option' value="<?php print JRequest::getVar('option') ?>" />						
 					</td>
