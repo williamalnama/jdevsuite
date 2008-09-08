@@ -1,5 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+
 function jdb()
 {
 	$args = func_get_args();
@@ -13,6 +14,8 @@ function jdb()
 	if ($q) {
 		
 		$db->execute($q);
+		JError::raiseNotice(500,str_replace($db->_table_prefix,'#__',$q));
+		
 		if ($db->getErrorMsg())
 			JError::raiseWarning(500,$db->getErrorMsg());
 	}
@@ -51,7 +54,8 @@ class MySQLTable
 		if (!preg_match('/^#__/',$this->name))
 			$this->name = jdb()->replacePrefix('#__'.$this->name);
 		$this->indices = array();
-		$this->exists =  in_array($this->name,jdb('SHOW TABLES')->loadResultArray());
+		jdb()->execute('SHOW TABLES');
+		$this->exists =  in_array($this->name,jdb()->loadResultArray());
 
 		$this->cols   = array();
 		$this->pk 	  = 'id';
