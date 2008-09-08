@@ -39,7 +39,7 @@ class Updater
 				
 			JFolder::move($tmpFolder,$cFolder);
 		}
-
+		JPath::setPermissions($cFolder,'0777','0777');
 		jimport('joomla.application.component.model');
 		require_once JPATH_COMPONENT.DS.'core'.DS.'lib'.DS.'helpers.php';		
 		require_once JPATH_COMPONENT.DS.'models'.DS.'config.php';
