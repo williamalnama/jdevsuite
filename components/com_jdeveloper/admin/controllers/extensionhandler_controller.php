@@ -5,7 +5,7 @@ class ControllerExtensionHandler extends ComponentController
 	public function __construct()
 	{
 		parent::__construct();
-		$type = JRequest::getVar('type','component');
+		$type = JRequest::getVar('ext','component');
 		try {
 			
 			$this->model = $this->getModel('extensionhandler',null,array('type'=>$type));
@@ -14,6 +14,7 @@ class ControllerExtensionHandler extends ComponentController
 			
 			
 		}
+
 	}
 	public function create()
 	{
@@ -27,19 +28,20 @@ class ControllerExtensionHandler extends ComponentController
 	}
 	public function uninstall()
 	{
-		$ext  = JRequest::getVar('ext');
+		$ext  = JRequest::getVar('name');
 		$this->model->uninstall($ext);	
 		$this->setRedirect('back');	
 	}
 	public function install()
-	{		
-		$ext  = JRequest::getVar('ext');				
-		$this->model->install($ext);
+	{			
+		$ext  = JRequest::getVar('name');				
+		$this->model->install($ext);		
 		$this->setRedirect('back');
 	}
 	public function default_()
 	{					
-		$this->assign(array('model'=>$this->model));	
+		$this->assign(array('model'=>$this->model));
+		$this->setLayout($this->model->type.'_default');	
 	}
 	public function getViewName()
 	{

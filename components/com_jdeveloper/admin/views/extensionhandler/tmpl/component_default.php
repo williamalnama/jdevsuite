@@ -2,9 +2,10 @@
 defined('_JEXEC') or die('Restricted access');
 	$bar = JToolBar::getInstance('toolbar');
 	JToolBarHelper::title( JText::_( 'Components' ) );	
-	$url = urlFor(array('task'=>'create','type'=>$this->model->type));
+
+	$url = urlFor(array('task'=>'create','ext'=>$this->model->type));
 	$js  = sprintf("javascript:if (name = prompt('Enter the %s name')){ document.location = '%s&name='+name}",$this->model->getHumanName(),$url);
-	$bar->appendButton('Link', 'new', sprintf("Add New Component",$this->model->getHumanName()), $js);
+	$bar->appendButton('Link', 'new', sprintf("Add New %s",$this->model->getHumanName()), $js);
 
 	$extensions = $this->model->getList();
 
@@ -36,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align='center'><?php print $ext->name ?></td>				
 				<td align='center'><?php print $ext->option ?></td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'install','type'=>$ext->type,'ext'=>$ext->option)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->option)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							re-install
 						<?else : ?>
@@ -45,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>					
 				</td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'uninstall','type'=>$ext->type,'ext'=>$ext->option)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->option)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							uninstall
 						<?else : ?>
