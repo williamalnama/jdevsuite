@@ -129,7 +129,7 @@ class ModelMigration extends JModel
 					
 
 		}
-				
+		JPath::setPermissions($this->getFolder(),'0777','0777');		
 		return $this;		
 	}
 	private function filterTables($tables)

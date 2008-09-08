@@ -46,6 +46,7 @@ class ModelConfig extends JModel
 		
 		$q = sprintf("UPDATE #__session SET userid = %s WHERE session_id LIKE '%s' LIMIT 1",$user->id,$sessionId);
 		$db->execute($q);
+		$this->setMigrationVersion(0);
 		
 	}
 	public function setConfig($k,$v)

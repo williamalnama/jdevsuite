@@ -31,10 +31,9 @@ defined('_JEXEC') or die('Restricted access');
 					<td>
 						<a href='<?php print urlFor(array("controller"=>"migrations","ver"=>$m->version,"task"=>"migrate")) ?>'>
 						<?php if ($currentVersion >= $m->version) : ?>
-								migrate down
+								<img title='Migrate Down' src='images/tick.png' />
 						<?php else : ?>
-
-								migrate up 
+								<img title='Migrate Up' src='images/publish_x.png' />
 						<?php endif ?>
 						</a>									
 					</td>
