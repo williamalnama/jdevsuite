@@ -42,7 +42,7 @@ class ModelMigration extends JModel
 			$method   = 'up';			
 		} else {
 			$versions = array_reverse(range($targetVer,$currVer));
-			$method   = 'down';			
+			$method   = 'down';
 		}
 		foreach($versions as $ver)
 		{
