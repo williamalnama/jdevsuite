@@ -12,8 +12,10 @@ class ModelMigration extends JModel
 	{
 		
 		$folder = $this->config->getDevFolder().DS.'migrations';
-		if ( !JFolder::exists($folder) )
+		if ( !JFolder::exists($folder) ) {
 			JFolder::create($folder);
+			JPath::setPermissions($folder,'0777','0777');
+		}
 		return $folder;
 	}
 	public function getMigrationFile($ver)

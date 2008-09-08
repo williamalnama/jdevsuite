@@ -69,8 +69,8 @@ class ModelConfig extends JModel
 				{
 					$this->setError('Unable to create folder. Make sure the parent folder has 777 permission');
 					return false;	
-				}
-				
+					
+				} 
 			copyr($this->getDevFolder(),$devFolder);
 			$this->updateSymlinks(JPATH_ROOT,$this->getDevFolder(),$devFolder);	
 			
@@ -79,6 +79,8 @@ class ModelConfig extends JModel
 			
 			JFolder::create($devFolder);
 		}
+		
+		JPath::setPermissions($devFolder,'0777','0777');
 		$this->xmlConfig->devfolder = $devFolder;
 		JFile::write(JPATH_COMPONENT.DS.'config.xml',pretifyXML($this->xmlConfig));
 		return true;

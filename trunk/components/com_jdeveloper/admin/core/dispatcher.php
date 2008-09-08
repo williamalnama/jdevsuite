@@ -23,8 +23,7 @@
 	
 	if ( JFile::exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'_controller.php') ) 
 	{
-		
-		
+				
 		JLoader::import( $controller.'_controller' , JPATH_COMPONENT.DS.'controllers' );
 
 		$class = new ReflectionClass('Controller'.preg_replace('/_/','',ucfirst($controller)));
