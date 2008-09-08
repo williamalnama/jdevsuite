@@ -9,6 +9,13 @@ class ControllerConfig  extends ComponentController
 		$this->configModel = $this->getModel('config');
 		
 	}
+	public function reset()
+	{
+		
+		$this->configModel->reset();
+		$this->setRedirect(array('task'=>'default'));
+		
+	}
 	public function default_()
 	{
 		require_once JPATH_COMPONENT.DS.'updater.php';

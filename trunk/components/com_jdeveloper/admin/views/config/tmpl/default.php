@@ -1,6 +1,11 @@
 <?php
 	defined('_JEXEC') or die('Restricted access');
 	JToolBarHelper::title( JText::_( 'Configuration' ) );		
+
+	$url = urlFor(array('task'=>'reset'));
+	$js  = sprintf("javascript:if (confirm('Reseting environment will result restoration of the initial state of joomla including sample data. Are you sure ? ')){ document.location = '%s'}",$url);
+	JToolBar::getInstance('toolbar')->appendButton('Link', 'cancel', 'Reset', $js);
+		
 ?>
 <form method='POST' >
 	<div class="col ">

@@ -1,6 +1,7 @@
 <?php
 
 require 'component.php';
+require 'plugin.php';
 
 
 class ModelExtensionHandler extends JModel
@@ -8,7 +9,8 @@ class ModelExtensionHandler extends JModel
 	public function __construct($args)
 	{
 		
-		$this->type   = strtolower( pick(@$args['type'],'component') );
+		$this->type   = 'component';//strtolower( pick(@$args['type'],'component') );
+
 		$this->config = new ModelConfig();
 		if (is_null($this->type) or !in_array($this->type,array('component','plugin','module')))
 			throw new Exception('please enter a valid extension type');
@@ -30,18 +32,20 @@ class ModelExtensionHandler extends JModel
 	}
 	public function create($name)
 	{				
-		Component::create($name,$this->getFolder());			
-	}
-	public function install($option)
-	{	
-		
-		$component = new Component($option,$this->getFolder());
-		$component->install();
+		if ($this->type == 'component')
+			Component::create($name,$this->getFolder());			
+		else if ($this->type == 'plugin')
+			Plugin::create($name,$this->getFolder());
 		
 	}
-	public function uninstall($option)
+	public function install($name)
+	{			
+		$extension = $this->getExtInstance($name);
+		$extension->install();				
+	}
+	public function uninstall($name)
 	{		
-		$component = new Component($option,$this->getFolder());
+		$component = $this->getExtInstance($name);
 		$component->uninstall();		
 	}
 	public function getList()
@@ -51,7 +55,7 @@ class ModelExtensionHandler extends JModel
 		foreach($componentFolders as $cFolder)
 		{			
 			try {
-				$component = new Component($cFolder,$this->getFolder());
+				$component = $this->getExtInstance($cFolder);
 				$components[] = $component;
 			}catch(Exception $e) {
 				
@@ -59,6 +63,11 @@ class ModelExtensionHandler extends JModel
 			
 		}
 		return $components;
+	}
+	private function getExtInstance($folderName)
+	{
+		$classname = ucfirst($this->type);
+		return new $classname($folderName,$this->getFolder());		
 	}
 
 }

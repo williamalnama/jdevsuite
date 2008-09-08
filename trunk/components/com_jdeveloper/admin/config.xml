@@ -2,5 +2,5 @@
 <config>
     <version>0.917</version>
     <devfolder>/Users/asanieyan/Sites/jeblast/administrator/components/com_jdeveloper/jdevfolder</devfolder>
-    <migration>1</migration>
+    <migration>0</migration>
 </config>

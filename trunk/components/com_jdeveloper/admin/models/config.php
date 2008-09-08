@@ -13,6 +13,41 @@ class ModelConfig extends JModel
 		$this->defaultDevFolder = JPATH_COMPONENT.DS.'jdevfolder';
 		
 	}
+	public function reset()
+	{
+		jimport('joomla.installer.helper');
+		$db = $this->getDBO();
+		$sessionId = JFactory::getSession()->getId();
+		$q = sprintf("SELECT * FROM #__session WHERE session_id LIKE '%s' LIMIT 1",$sessionId);
+		$db->execute($q);
+		$userId = $db->loadObject()->userid;
+		$user = JFactory::getUser($userId);
+		$user->id = null;
+		
+		$db->execute("SHOW TABLES");
+		$tables = $db->loadResultArray();
+		
+		foreach($tables as $t) {
+			if (preg_match('/session/',$t)) 
+				continue;
+				
+			$db->execute("DROP TABLE ".$t);
+		}
+		
+		$sql = JFile::read(dirname(__FILE__).DS.'sql'.DS.'reset.sql');
+		$queries = JInstallerHelper::splitsql($sql);
+		
+		foreach($queries as $q)
+			$db->execute($q);
+		
+		$user->save();
+
+		$db->execute("INSERT INTO `#__components` VALUES (null,'Joomla Developer','option=com_jdeveloper',0,0,'option=com_jdeveloper','Joomla Developer','com_jdeveloper',0,'js/ThemeOffice/component.png',0,'',1)");			
+		
+		$q = sprintf("UPDATE #__session SET userid = %s WHERE session_id LIKE '%s' LIMIT 1",$user->id,$sessionId);
+		$db->execute($q);
+		
+	}
 	public function setConfig($k,$v)
 	{
 		$this->xmlConfig->$k = $v;
