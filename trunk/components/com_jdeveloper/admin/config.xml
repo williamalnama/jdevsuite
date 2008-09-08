@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <version>0.921</version>
+    <version>0.922</version>
     <devfolder>/Users/asanieyan/Projects/eblast/sourcecode/administrator/components/com_eblast/devfolder</devfolder>
     <migration>1</migration>
 </config>

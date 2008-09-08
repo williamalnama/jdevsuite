@@ -68,9 +68,9 @@ defined('_JEXEC') or die('Restricted access');
 			{
 				$$("div.query").each(function(e){
 					if ( e.getText().contains('#_') )
-						e.setText(e.getText().replace(/#_/,'jos'));
+						e.setHTML(e.innerHTML.replace(/#_/,'jos'));
 					else
-						e.setText(e.getText().replace(/jos/,'#_'));
+						e.setHTML(e.innerHTML.replace(/jos/,'#_'));
 				})
 			}
 		</script>
