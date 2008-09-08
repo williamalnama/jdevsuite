@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php foreach($peformedQueries as $q) : ?>
 							<?php list($query,$error) = $q ?>							
 							<div style='margin-top:5px;margin-bottom:5px'>
-								<div class='query'><?php print $query; ?>;</div>
+								<div class='query'><?php print preg_replace('/\\t/','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',preg_replace('/\\n/','<br>',$query)); ?>;</div>
 								<?php if ($error) : ?>
 									<div style='color:red'><?php print $error?></div>
 								<?php endif ?>

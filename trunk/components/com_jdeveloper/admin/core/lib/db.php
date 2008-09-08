@@ -193,18 +193,24 @@ class MySQLTable
 			return;
 			
 		$pk = new MySQLColumn($this,$this->pk,'INT(11)');
+		$pk->allowNull(false);
+		
 		array_unshift($this->cols,$pk);
 		
 		$this->addIndex($this->pk,array('primary_key'=>true,'push'=>true));
 		
-		$this->sqlRows = array_map(create_function('$n','return $n->create();'),$this->cols);
-		$this->sqlRows = array_merge($this->sqlRows,$this->indices);
+		$this->cols = array_map(create_function('$n','return $n->create();'),$this->cols);
+
+		$this->cols	   = implode(",\n\t",$this->cols);
+		if ( count($this->indices) > 0 )
+			$this->cols .= ',';
+						
+		$this->indices = implode(",\n\t",$this->indices);
 		
-		$this->sqlRows = implode(",",$this->sqlRows);
-		
-		$q = sprintf("CREATE TABLE `%s` ( %s ) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`",
+		$q = sprintf("CREATE TABLE `%s` (\n\t%s\n\n\t%s\n\n) ENGINE=MyISAM CHARACTER SET `utf8` COLLATE `utf8_general_ci`",
 					$this->name,
-					$this->sqlRows);
+					$this->cols,
+					$this->indices);
 		jdb($q);
 		
 	}	
