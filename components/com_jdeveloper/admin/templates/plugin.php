@@ -8,7 +8,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage	
  * @since 		1.5
  */
-class plg<?php print ucfirst($group)?><?php print ucfirst(preg_replace('/_/','',$name))?> extends JPlugin {
+class plg<?php print $groupName.$className?> extends JPlugin {
 
 
 
