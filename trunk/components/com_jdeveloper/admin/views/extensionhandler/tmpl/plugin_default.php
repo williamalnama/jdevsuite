@@ -34,10 +34,10 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach($extensions as $i=>$ext) : ?>
 			<tr>
 				<td align='center'><?php print $i + 1 ?></td>
-				<td align='center'><?php print $ext->name ?></td>				
-				<td align='center'><?php print $ext->group ?></td>
+				<td align='center'><?php print $ext->humanName ?></td>				
+				<td align='center'><?php print $ext->groupName ?></td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->wholeName)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->sysName)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							re-install
 						<?else : ?>

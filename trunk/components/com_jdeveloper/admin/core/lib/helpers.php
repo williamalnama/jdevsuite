@@ -102,9 +102,14 @@ function copyr($source, $dest)
     $dir->close();
     return true;
 }
-
-function  titleCase($string)  
+function str_classifiy($string)
+{
+	$string = preg_replace('/_/',' ',$string);
+	return str_replace(' ','',str_titleCase($string));	
+}
+function  str_titleCase($string)  
 { 
+		$string = preg_replace('/_/',' ',$string);
 	    $len=strlen($string); 
         $i=0; 
         $last= ""; 

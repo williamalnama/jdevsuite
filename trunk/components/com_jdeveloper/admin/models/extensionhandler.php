@@ -9,7 +9,7 @@ class ModelExtensionHandler extends JModel
 	public function __construct($args)
 	{
 		
-		$this->type   = 'component';//strtolower( pick(@$args['type'],'component') );
+		$this->type   = strtolower( pick(@$args['type'],'component') );
 
 		$this->config = new ModelConfig();
 		if (is_null($this->type) or !in_array($this->type,array('component','plugin','module')))
@@ -48,9 +48,9 @@ class ModelExtensionHandler extends JModel
 		$component = $this->getExtInstance($name);
 		$component->uninstall();		
 	}
-	public function getList()
-	{		
-		$componentFolders = JFolder::folders($this->getFolder());		
+	public function getComponentList()
+	{
+		$componentFolders = JFolder::folders($this->getFolder());
 		$components = array();
 		foreach($componentFolders as $cFolder)
 		{			
@@ -62,7 +62,30 @@ class ModelExtensionHandler extends JModel
 			}
 			
 		}
-		return $components;
+		return $components;				
+	}
+	public function getPluginList()
+	{
+		$groups  = JFolder::folders($this->getFolder());
+		$plugins = array();
+		foreach($groups as $group)
+		{
+			$files = JFolder::files($this->getFolder().DS.$group);
+			foreach($files as $f) {
+				if ( JFile::getExt($f) != 'xml') continue;
+				$f = preg_replace('/\..*/','',$f);
+				$id = strtolower($group).'_'.strtolower($f);
+				$plugins[]= $this->getExtInstance($id);
+			}
+		}
+	
+		return $plugins;
+		
+	}
+	public function getList()
+	{		
+		$method = 'get'.$this->type.'list';
+		return $this->$method();
 	}
 	private function getExtInstance($folderName)
 	{
