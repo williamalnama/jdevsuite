@@ -55,6 +55,6 @@ defined('_JEXEC') or die('Restricted access');
 					</a>					
 				</td>				
 			</tr>
-			<? endforeach; ?>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
