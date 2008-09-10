@@ -1,5 +1,6 @@
 <?php
 
+require dirname(__FILE__).DS.'installer.php';
 require 'component.php';
 require 'plugin.php';
 
@@ -40,6 +41,7 @@ class ModelExtensionHandler extends JModel
 	}
 	public function install($name)
 	{			
+
 		$extension = $this->getExtInstance($name);
 		$extension->install();				
 	}
@@ -66,17 +68,11 @@ class ModelExtensionHandler extends JModel
 	}
 	public function getPluginList()
 	{
-		$groups  = JFolder::folders($this->getFolder());
+		$pluginIds  = JFolder::folders($this->getFolder());
 		$plugins = array();
-		foreach($groups as $group)
+		foreach($pluginIds as $id)
 		{
-			$files = JFolder::files($this->getFolder().DS.$group);
-			foreach($files as $f) {
-				if ( JFile::getExt($f) != 'xml') continue;
-				$f = preg_replace('/\..*/','',$f);
-				$id = strtolower($group).'_'.strtolower($f);
-				$plugins[]= $this->getExtInstance($id);
-			}
+			$plugins[]= $this->getExtInstance($id);
 		}
 	
 		return $plugins;

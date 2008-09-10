@@ -45,6 +45,14 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 				</tr>
 			<?php endforeach; ?>
+			<?php if ( isset($this->migrationOutput) ) : ?>
+			<tr>
+				<td colspan=20>
+					<legend>Output</legend>
+						
+				</td>
+			</tr>	
+			<?php endif; ?>
 			<?php if ( count($peformedQueries) > 0 ) : ?>
 			<tr>
 				<td colspan=20>

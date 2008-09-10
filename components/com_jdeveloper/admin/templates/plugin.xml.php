@@ -9,5 +9,8 @@
 	<authorUrl></authorUrl>
 	<version></version>
 	<description></description>
+	<files>
+		<filename plugin="<?php print $pluginName ?>"><?php print $pluginName ?>.php</filename>
+	</files>	
 	<params/>
 </install>

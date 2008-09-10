@@ -1,6 +1,6 @@
 <?php
 
-jimport('joomla.installer.installer');
+//jimport('joomla.installer.installer');
 
 class Component
 {
@@ -99,8 +99,9 @@ class Component
 		else
 			return new SimpleXMLElement(JFile::read($manifestFile));
 	}
-
-	public function uninstall()
+	
+	//might not need these anymore - using modified jinstaller
+	public function uninstall2()
 	{
 		
 		$installer = JInstaller::getInstance();
@@ -131,10 +132,12 @@ class Component
 			$installer->uninstall($this->type,$id);			
 		}
 	}
-	public function install()
+	
+	//might not need these anymore - using modified jinstaller
+	public function install2()
 	{
 		$this->updateManifest();
-		$installer = JInstaller::getInstance();		
+		$installer = JInstaller::getInstance();
 
 		$this->uninstall();
 		
@@ -153,6 +156,25 @@ class Component
 		}
 		
 	}
+	public function uninstall()
+	{
+		$installer = JInstaller::getInstance();
+		$id = $this->isInstalled();
+
+		$installer->uninstall($this->type,$id);
+		
+	}
+	public function install()
+	{
+		if ($this->isInstalled())
+			$this->uninstall();	
+
+		$this->updateManifest();
+		
+		$installer = JInstaller::getInstance();
+		$installer->install($this->folder);						
+				
+	}	
 	public function isInstalled()
 	{
 		$db = JFactory::getDBO();
