@@ -8,9 +8,14 @@ class ControllerMigrations extends ComponentController
 	{
 		$ver = JRequest::getVar('ver',null);
 		if ( ! is_null($ver) ) {
-			$this->getModel('migration')->migrate($ver);
+			
+				$this->getModel('migration')->migrate($ver);
+			
+			
 		}
-		$this->setRedirect('back');
+		//$this->setRedirect('back');
+///		$this->assign(array('migrationOutput'=>$output));
+		$this->default_();
 				
 	}
 	public function default_()

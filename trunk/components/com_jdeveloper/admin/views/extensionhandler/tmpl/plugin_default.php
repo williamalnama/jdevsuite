@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align='center'><?php print $ext->humanName ?></td>				
 				<td align='center'><?php print $ext->groupName ?></td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->sysName)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->id)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							re-install
 						<?else : ?>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>					
 				</td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->wholeName)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->id)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							uninstall
 						<?else : ?>

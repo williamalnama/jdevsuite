@@ -30,13 +30,15 @@ class ControllerExtensionHandler extends ComponentController
 	{
 		$ext  = JRequest::getVar('name');
 		$this->model->uninstall($ext);	
-		$this->setRedirect('back');	
+		$this->default_();
+//		$this->setRedirect('back');	
 	}
 	public function install()
 	{			
 		$ext  = JRequest::getVar('name');				
-		$this->model->install($ext);		
-		$this->setRedirect('back');
+		$this->model->install($ext);
+		$this->default_();
+		//$this->setRedirect('back');
 	}
 	public function default_()
 	{					
