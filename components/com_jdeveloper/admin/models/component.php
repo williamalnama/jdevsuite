@@ -1,6 +1,6 @@
 <?php
 
-//jimport('joomla.installer.installer');
+jimport('joomla.installer.installer');
 
 class Component
 {

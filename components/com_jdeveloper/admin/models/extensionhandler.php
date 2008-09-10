@@ -1,8 +1,6 @@
 <?php
 
-require dirname(__FILE__).DS.'installer.php';
-require 'component.php';
-require 'plugin.php';
+//require dirname(__FILE__).DS.'installer.php';
 
 
 class ModelExtensionHandler extends JModel
@@ -33,6 +31,8 @@ class ModelExtensionHandler extends JModel
 	}
 	public function create($name)
 	{				
+		require $this->type.'.php';
+		
 		if ($this->type == 'component')
 			Component::create($name,$this->getFolder());			
 		else if ($this->type == 'plugin')

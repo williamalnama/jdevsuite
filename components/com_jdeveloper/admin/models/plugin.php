@@ -1,7 +1,7 @@
 <?php
 
 //jimport('joomla.installer.installer');
-
+require dirname(__FILE__).DS.'installer.php';
 
 class Plugin
 {
