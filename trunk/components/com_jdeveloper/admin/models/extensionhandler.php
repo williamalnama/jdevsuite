@@ -7,13 +7,17 @@ class ModelExtensionHandler extends JModel
 {
 	public function __construct($args)
 	{
-		
-		$this->type   = strtolower( pick(@$args['type'],'component') );
 
+		$this->type   = strtolower( pick(@$args['type'],'component') );
+		
+
+		
 		$this->config = new ModelConfig();
 		if (is_null($this->type) or !in_array($this->type,array('component','plugin','module')))
 			throw new Exception('please enter a valid extension type');
 			
+		require_once $this->type.'.php';
+		
 		parent::__construct($args);	
 	}
 	public function getHumanName()
@@ -31,7 +35,7 @@ class ModelExtensionHandler extends JModel
 	}
 	public function create($name)
 	{				
-		require $this->type.'.php';
+		
 		
 		if ($this->type == 'component')
 			Component::create($name,$this->getFolder());			
