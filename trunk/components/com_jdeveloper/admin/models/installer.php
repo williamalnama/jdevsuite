@@ -909,6 +909,7 @@ class JInstaller extends JObject
 				$filetype	= array_key_exists('type', $file) ? $file['type'] : 'file';
 
 				if (!file_exists($filesource)) {
+
 					/*
 					 * The source file does not exist.  Nothing to copy so set an error
 					 * and return false.
