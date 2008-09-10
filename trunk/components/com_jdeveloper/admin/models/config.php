@@ -94,28 +94,28 @@ class ModelConfig extends JModel
 			return false;
 		}
 		if ( JFolder::exists($devFolder) ) {
-			$this->setError('Folder already exists');
-			return false;
-		}
+//			$this->setError('Folder already exists');
+//			return false;
+		} else {
 		
-		if ( $this->devFolderExists())
-		{
-			if ( !JFolder::exists($devFolder) )
-				if ( !JFolder::create($devFolder) ) 
-				{
-					$this->setError('Unable to create folder. Make sure the parent folder has 777 permission');
-					return false;	
-					
-				} 
-			copyr($this->getDevFolder(),$devFolder);
-			$this->updateSymlinks(JPATH_ROOT,$this->getDevFolder(),$devFolder);	
-			
-			
-		}else {
-			
-			JFolder::create($devFolder);
+			if ( $this->devFolderExists())
+			{
+				if ( !JFolder::exists($devFolder) )
+					if ( !JFolder::create($devFolder) ) 
+					{
+						$this->setError('Unable to create folder. Make sure the parent folder has 777 permission');
+						return false;	
+						
+					} 
+				copyr($this->getDevFolder(),$devFolder);
+				$this->updateSymlinks(JPATH_ROOT,$this->getDevFolder(),$devFolder);	
+				
+				
+			}else {
+				
+				JFolder::create($devFolder);
+			}
 		}
-		
 		JPath::setPermissions($devFolder,'0777','0777');
 		$this->xmlConfig->devfolder = $devFolder;
 		JFile::write(JPATH_COMPONENT.DS.'config.xml',pretifyXML($this->xmlConfig));
