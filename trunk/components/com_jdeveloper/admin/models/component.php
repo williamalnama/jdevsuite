@@ -100,8 +100,8 @@ class Component
 			return new SimpleXMLElement(JFile::read($manifestFile));
 	}
 	
-	//might not need these anymore - using modified jinstaller
-	public function uninstall2()
+	//might not need these anymore - using modified jinstaller	
+	public function uninstall()
 	{
 		
 		$installer = JInstaller::getInstance();
@@ -134,7 +134,7 @@ class Component
 	}
 	
 	//might not need these anymore - using modified jinstaller
-	public function install2()
+	public function install()
 	{
 		$this->updateManifest();
 		$installer = JInstaller::getInstance();
@@ -156,6 +156,7 @@ class Component
 		}
 		
 	}
+	/*
 	public function uninstall()
 	{
 		$installer = JInstaller::getInstance();
@@ -174,7 +175,7 @@ class Component
 		$installer = JInstaller::getInstance();
 		$installer->install($this->folder);						
 				
-	}	
+	}	*/
 	public function isInstalled()
 	{
 		$db = JFactory::getDBO();
