@@ -40,18 +40,18 @@ defined('_JEXEC') or die('Restricted access');
 					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->option)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							re-install
-						<?else : ?>
+						<?php else : ?>
 							install
-						<?endif;?>
+						<?php endif;?>
 					</a>					
 				</td>
 				<td align='center'>
 					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->option)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							uninstall
-						<?else : ?>
+						<?php else : ?>
 							
-						<?endif;?>
+						<?php endif;?>
 					</a>					
 				</td>				
 			</tr>
