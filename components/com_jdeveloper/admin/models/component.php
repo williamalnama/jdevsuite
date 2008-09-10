@@ -128,7 +128,7 @@ class Component
 		{
 			copyr($targetAdmin,$admin);
 			copyr($targetSite,$site);
-			copyr($this->getManifestPath(),$admin.DS.'manifest.xml');						
+			copyr($this->getManifestPath(),$admin.DS.'manifest.xml');
 			$installer->uninstall($this->type,$id);			
 		}
 	}
@@ -136,16 +136,17 @@ class Component
 	//might not need these anymore - using modified jinstaller
 	public function install()
 	{
+		if ($this->isInstalled())
+			$this->uninstall();	
+
 		$this->updateManifest();
 		$installer = JInstaller::getInstance();
-
-		$this->uninstall();
 		
 		$admin = JPATH_ADMINISTRATOR.DS.'components'.DS.$this->option;
 		$site  = JPATH_SITE.DS.'components'.DS.$this->option;
 		$targetAdmin = $this->folder.DS.'admin';
 		$targetSite  = $this->folder.DS.'site';
-				
+
 		if ( $installer->install($this->folder) )
 		{									
 			JFolder::delete($admin);

@@ -53,14 +53,15 @@ function pretifyXML($xml,$level=4)
         foreach ($xml as $el) {
             if (preg_match('/^<([\w])+[^>\/]*>$/U', $el)) {
                 // opening tag, increase indent
-                $pretty[] = str_repeat(' ', $indent) . $el;
+                $pretty[] = str_repeat(' ', abs($indent)) . $el;
                 $indent += $level;
             } else {
                 if (preg_match('/^<\/.+>$/', $el)) {
                     // closing tag, decrease indent
                     $indent -= $level;
                 }
-                $pretty[] = str_repeat(' ', $indent) . $el;
+
+                $pretty[] = str_repeat(' ', abs($indent)) . $el;
             }
         }
 
