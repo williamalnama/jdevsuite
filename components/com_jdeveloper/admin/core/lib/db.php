@@ -236,7 +236,7 @@ class MySQLColumn
 		$this->type = $type;
 		$this->options = $options;
 		
-		if ( $this->table->exists && count($this->options) > 0 )
+		if ( $this->table->exists && !empty($this->options) )
 			$this->up();
 		
 	}
