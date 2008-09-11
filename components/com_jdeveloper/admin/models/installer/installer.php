@@ -704,6 +704,7 @@ class JInstaller extends JObject
 		// Process each file in the $files array (children of $tagName).
 		foreach ($files as $file)
 		{
+
 			/*
 			 * Language files go in a subfolder based on the language code, ie.
 			 *
@@ -744,9 +745,10 @@ class JInstaller extends JObject
 					return false;
 				}
 			}
-
+			
 			// Add the file to the copyfiles array
 			$copyfiles[] = $path;
+
 		}
 
 		return $this->copyFiles($copyfiles);
@@ -914,6 +916,7 @@ class JInstaller extends JObject
 
 				if (!file_exists($filesource)) 
 				{
+
 					/*
 					 * The source file does not exist.  Nothing to copy so set an error
 					 * and return false.
