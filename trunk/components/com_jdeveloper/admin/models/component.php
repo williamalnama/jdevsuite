@@ -1,6 +1,7 @@
 <?php
 
-jimport('joomla.installer.installer');
+//jimport('joomla.installer.installer');
+
 
 class Component
 {
@@ -101,6 +102,7 @@ class Component
 	}
 	
 	//might not need these anymore - using modified jinstaller	
+	/*
 	public function uninstall()
 	{
 		
@@ -134,6 +136,7 @@ class Component
 	}
 	
 	//might not need these anymore - using modified jinstaller
+/*
 	public function install()
 	{
 		if ($this->isInstalled())
@@ -157,12 +160,17 @@ class Component
 		}
 		
 	}
-	/*
+	*/
 	public function uninstall()
 	{
 		$installer = JInstaller::getInstance();
 		$id = $this->isInstalled();
-
+		if ( !$id )
+			return;
+		
+		$installer->setPath('source',$this->folder);
+		$installer->_findManifest();
+				
 		$installer->uninstall($this->type,$id);
 		
 	}
@@ -176,7 +184,7 @@ class Component
 		$installer = JInstaller::getInstance();
 		$installer->install($this->folder);						
 				
-	}	*/
+	}
 	public function isInstalled()
 	{
 		$db = JFactory::getDBO();
