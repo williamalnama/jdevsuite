@@ -121,6 +121,11 @@ class MySQLTable
 		return $col;
 		
 	}
+	function dropCols()
+	{
+		$cols = func_get_args();
+		call_user_method_array('dropColumns',$this,$cols);
+	}
 	public function dropColumns()
 	{
 		$cols = func_get_args();		
