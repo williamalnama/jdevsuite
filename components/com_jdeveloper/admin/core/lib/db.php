@@ -110,7 +110,7 @@ class MySQLTable
 	}	
 	public function addCol($name,$type,$options=array())
 	{
-		$this->addColumn($name,$type,$options);
+		return $this->addColumn($name,$type,$options);
 	}
 	public function addColumn($name,$type,$options=array())
 	{
