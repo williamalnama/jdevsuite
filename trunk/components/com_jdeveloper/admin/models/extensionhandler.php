@@ -46,14 +46,15 @@ class ModelExtensionHandler extends JModel
 	}
 	public function install($name)
 	{			
-
 		$extension = $this->getExtInstance($name);
-		$extension->install();				
+		$extension->install();
+		JPath::setPermissions($this->folder,'0777');		
 	}
 	public function uninstall($name)
 	{		
 		$component = $this->getExtInstance($name);
 		$component->uninstall();		
+		JPath::setPermissions($this->folder,'0777');
 	}
 	public function getComponentList()
 	{
