@@ -182,7 +182,7 @@ class Component
 		$this->updateManifest();
 		
 		$installer = JInstaller::getInstance();
-		$installer->install($this->folder);						
+		$installer->install($this->folder);
 				
 	}
 	public function isInstalled()
