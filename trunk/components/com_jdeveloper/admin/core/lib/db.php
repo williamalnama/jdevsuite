@@ -114,7 +114,7 @@ class MySQLTable
 	}
 	public function addColumn($name,$type,$options=array())
 	{
-		$col = new MySQLColumn($this,$name,$type);
+		$col = new MySQLColumn($this,$name,$type,$options);
 		
 		$this->cols[] = $col;
 			
