@@ -1,7 +1,6 @@
 <?php
 
 //jimport('joomla.installer.installer');
-require dirname(__FILE__).DS.'installer.php';
 
 class Plugin
 {
@@ -70,8 +69,8 @@ class Plugin
 	{
 		$installer = JInstaller::getInstance();
 		$id = $this->isInstalled();
-
-		$installer->uninstall($this->type,$id);
+		if ($id)
+			$installer->uninstall($this->type,$id);
 		
 	}
 	public function install()
@@ -83,8 +82,6 @@ class Plugin
 		
 		$installer = JInstaller::getInstance();
 		$installer->install($this->folder);
-		
-		
 		
 				
 	}

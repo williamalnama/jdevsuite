@@ -2,6 +2,7 @@
 
 //require dirname(__FILE__).DS.'installer.php';
 
+require dirname(__FILE__).DS.'installer'.DS.'installer.php';
 
 class ModelExtensionHandler extends JModel
 {

@@ -214,14 +214,15 @@ class JInstaller extends JObject
 		if (!is_object($adapter))
 		{
 			// Try to load the adapter object
-			$path  = JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'installer';
-			require_once($path.DS.'adapters'.DS.strtolower($name).'.php');
+
+			require_once(dirname(__FILE__).DS.'adapters'.DS.strtolower($name).'.php');
 			$class = 'JInstaller'.ucfirst($name);
 			if (!class_exists($class)) {
 				return false;
 			}
 			$adapter = new $class($this);
 			$adapter->parent =& $this;
+
 		}
 		$this->_adapters[$name] =& $adapter;
 		return true;
@@ -258,7 +259,7 @@ class JInstaller extends JObject
 
 				case 'folder' :
 					// remove the folder
-					$stepval = JFolder::delete($step['path']);
+					$stepval = $this->removeFolder($step['path']);
 					break;
 
 				case 'query' :
@@ -299,6 +300,7 @@ class JInstaller extends JObject
 	 */
 	function install($path=null)
 	{
+
 		if ($path && JFolder::exists($path)) {
 			$this->setPath('source', $path);
 		} else {
@@ -331,6 +333,7 @@ class JInstaller extends JObject
 		}
 
 		if (is_object($this->_adapters[$type])) {
+
 			return $this->_adapters[$type]->install();
 		}
 		return false;
@@ -570,6 +573,7 @@ class JInstaller extends JObject
 	function parseFiles($element, $cid=0)
 	{
 		// Initialize variables
+
 		$copyfiles = array ();
 
 		// Get the client info
@@ -613,13 +617,13 @@ class JInstaller extends JObject
 		} else {
 			$source = $this->getPath('source');
 		}
-
+		
 		// Process each file in the $files array (children of $tagName).
 		foreach ($files as $file)
 		{
 			$path['src']	= $source.DS.$file->data();
 			$path['dest']	= $destination.DS.$file->data();
-
+			
 			// Is this path a file or folder?
 			$path['type']	= ( $file->name() == 'folder') ? 'folder' : 'file';
 
@@ -908,8 +912,8 @@ class JInstaller extends JObject
 				$filedest	= JPath::clean($file['dest']);
 				$filetype	= array_key_exists('type', $file) ? $file['type'] : 'file';
 
-				if (!file_exists($filesource)) {
-
+				if (!file_exists($filesource)) 
+				{
 					/*
 					 * The source file does not exist.  Nothing to copy so set an error
 					 * and return false.
@@ -942,24 +946,13 @@ class JInstaller extends JObject
 					
 					if ( $filetype == 'folder') {
 						if ( file_exists($filedest) )
-							JFolder::delete($filedest);						
+							$this->removeFolder($filedest);	
 						symlink($filesource,$filedest);
-/*						if (!(JFolder::copy($filesource, $filedest, null, $overwrite))) {
-							JError::raiseWarning(1, 'JInstaller::install: '.JText::sprintf('Failed to copy folder to', $filesource, $filedest));
-							return false;
-						}*/
-
 						$step = array ('type' => 'folder', 'path' => $filedest);
 					} else {
 						if ( file_exists($filedest) )
 							JFile::delete($filedest);
 						symlink($filesource,$filedest);
-						/*
-						if (!(JFile::copy($filesource, $filedest))) {
-							JError::raiseWarning(1, 'JInstaller::install: '.JText::sprintf('Failed to copy file to', $filesource, $filedest));
-							return false;
-						}*/
-
 						$step = array ('type' => 'file', 'path' => $filedest);
 					}
 
@@ -990,6 +983,14 @@ class JInstaller extends JObject
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
+	function removeFolder($folderName)
+	{
+		if ( is_link($folderName) )
+			JFile::delete($folderName);
+		else
+			JFolder::delete($folderName);
+		
+	}
 	function removeFiles($element, $cid=0)
 	{
 		// Initialize variables
@@ -1004,6 +1005,7 @@ class JInstaller extends JObject
 		if (!is_a($element, 'JSimpleXMLElement') || !count($element->children())) {
 			// Either the tag does not exist or has no children therefore we return zero files processed.
 			return true;
+
 		}
 
 		// Get the array of file nodes to process
@@ -1069,7 +1071,8 @@ class JInstaller extends JObject
 			 * Actually delete the files/folders
 			 */
 			if (is_dir($path)) {
-				$val = JFolder::delete($path);
+				$this->removeFolder($path);
+				$val = true;
 			} else {
 				$val = JFile::delete($path);
 			}
@@ -1119,6 +1122,7 @@ class JInstaller extends JObject
 	{
 		// Get an array of all the xml files from teh installation directory
 		$xmlfiles = JFolder::files($this->getPath('source'), '.xml$', 1, true);
+
 		// If at least one xml file exists
 		if (!empty($xmlfiles)) {
 			foreach ($xmlfiles as $file)
