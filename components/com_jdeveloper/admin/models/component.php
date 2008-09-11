@@ -182,7 +182,6 @@ class Component
 		$this->updateManifest();		
 		
 		$installer = JInstaller::getInstance();
-		$installer->setPath('project_root',preg_replace('/\wcomponents.*/','',$this->folder));
 		$installer->install($this->folder);
 				
 	}
