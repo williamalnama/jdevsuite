@@ -108,7 +108,11 @@ class MySQLTable
 		$this->cols   = array();
 		$this->pk 	  = 'id';
 	}	
-	public function addColumn($name,$type)
+	public function addCol($name,$type,$options=array())
+	{
+		$this->addColumn($name,$type,$options);
+	}
+	public function addColumn($name,$type,$options=array())
 	{
 		$col = new MySQLColumn($this,$name,$type);
 		
@@ -227,6 +231,13 @@ class MySQLColumn
 		$this->type = $type;
 		$this->options = $options;
 		
+		if ( count($this->options) > 0 )
+			$this->up();
+		
+	}
+	public function up()
+	{
+		$this->update();	
 	}
 	public function update()
 	{
@@ -239,15 +250,20 @@ class MySQLColumn
 	{
 		$options = $this->options;
 		$sql = sprintf("`%s` %s",$this->name,strtoupper($this->type));
-		if ( isset($options['allowNull']) && $options['allowNull'] == false )
+		if ( (isset($options['allowNull']) && $options['allowNull'] == false) || (isset($options['null']) && $options['null'] == false) )
 			$sql .= ' NOT NULL';
-		if ( isset($options['defaultValue']) )
-			$sql .= ' '.sprintf("DEFAULT %s",preg_match('/\(\)/',$options['defaultValue']) ? strtoupper($options['defaultValue']) : "'".$options['defaultValue']."'");
-			
+		if ( isset($options['defaultValue']) || isset($options['default']) )
+		{
+			$default = isset($options['defaultValue']) ? $options['defaultValue'] : $options['default'];
+			$sql .= ' '.sprintf("DEFAULT %s",preg_match('/\(\)/',$default) ? strtoupper($default) : "'".$default."'");
+		}	
 		if ( $this->table->exists )
 		{
 			if ( isset($options['after']) )
 				$sql .=  ' '.sprintf("AFTER `%s`",$options['after']);
+			else if ( isset($optinos['before']) )
+				$sql .=  ' '.sprintf("BEFORE `%s`",$options['after']);
+			
 		} else {
 			
 			if ( isset($options['primaryKey']) && isset($options['primaryKey']) == true )
