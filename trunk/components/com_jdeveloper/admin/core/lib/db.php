@@ -92,7 +92,12 @@ class MySQLTable
 		} else 
 			$object = $array;
 		
-		$db->insertObject($this->name,$object,$this->pk);
+		if ( defined('KOOWA') )
+			$tableName = preg_replace('/#_/','',$this->name);
+		else
+			$tableName = $this->name;
+			
+		$db->insertObject($tableName,$object,$this->pk);
 		
 		PerfomedQueries::captureLastQuery();
 		
@@ -104,9 +109,9 @@ class MySQLTable
 	{
 		$this->name  = $tableName;
 
-		if (!defined('KOOWA') && !preg_match('/^#__/',$this->name))
+		if (!preg_match('/^#__/',$this->name))
 			$this->name = jdb()->replacePrefix('#__'.$this->name);
-						
+
 		$this->indices = array();
 		jdb()->execute('SHOW TABLES');
 		$this->exists =  in_array($this->name,jdb()->loadResultArray());
