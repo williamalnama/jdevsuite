@@ -103,8 +103,10 @@ class MySQLTable
 	public function __construct($tableName)
 	{
 		$this->name  = $tableName;
-		if (!preg_match('/^#__/',$this->name))
+
+		if (!defined('KOOWA') && !preg_match('/^#__/',$this->name))
 			$this->name = jdb()->replacePrefix('#__'.$this->name);
+						
 		$this->indices = array();
 		jdb()->execute('SHOW TABLES');
 		$this->exists =  in_array($this->name,jdb()->loadResultArray());
