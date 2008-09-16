@@ -7,8 +7,10 @@ class PerfomedQueries
 	static function captureLastQuery()
 	{
 		$db = JFactory::getDBO();
-
-		self::capture($db->getQuery(),$db->getErrorMsg());
+		if ( get_class($db) == 'KDatabase')
+			self::capture($db->getObject()->getQuery(),$db->getObject()->getErrorMsg());
+		else
+			self::capture($db->getQuery(),$db->getErrorMsg());
 	}
 	static function capture($q,$error=null)	
 	{
@@ -55,7 +57,9 @@ function jdb()
 	
 	if ($q) {
 		
-		$db->execute($q);
+		try {
+			$db->execute($q);
+		}catch(Exception $e){}
 		PerfomedQueries::captureLastQuery();
 		
 		if ($db->getErrorMsg())
