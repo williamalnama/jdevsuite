@@ -266,6 +266,12 @@ class MySQLColumn
 	{
 		$options = $this->options;
 		$sql = sprintf("`%s` %s",$this->name,strtoupper($this->type));
+		
+		if ( $this->name == $this->table->pk )
+		{
+			$sql .=' NOT NULL AUTO_INCREMENT';
+			return $sql;
+		}
 		if ( (isset($options['allowNull']) && $options['allowNull'] == false) || (isset($options['null']) && $options['null'] == false) )
 			$sql .= ' NOT NULL';
 		if ( isset($options['defaultValue']) || isset($options['default']) )
@@ -284,6 +290,7 @@ class MySQLColumn
 			
 			if ( isset($options['primaryKey']) && isset($options['primaryKey']) == true )
 				$sql .= ' PRIMARY KEY';	
+			
 		}
 		
 		return $sql;
