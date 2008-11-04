@@ -58,7 +58,7 @@ class ModelMigration extends JModel
 		$m->fileName = $file;
 		$m->path	 = $this->path.DS.$file;
 		$m->name	  = preg_replace('/\d+_|\.php/','',$file);
-		$m->className = Inflector::classify($m->name).'Migration';
+		$m->className = Inflector::camelize($m->name).'Migration';
 		$m->version  = (int) preg_replace('/[^0-9]*/','',$file);
 		return $m;
 	}	
@@ -72,6 +72,7 @@ class ModelMigration extends JModel
 	{		
 		if (!@$this->files)
 			$this->files = JFolder::files($this->path);
+
 		foreach($this->files as $file)
 		{
 			$m = $this->parseFileName($file);
@@ -120,7 +121,7 @@ class ModelMigration extends JModel
 		{
 			$migration = $this->getMigrationFile($ver);
 			require $migration->path;
-			$migrationClass = new $migration->className();
+			$migrationClass = new $migration->className;
 			$migrationClass->$method();
 	
 			$this->setVersion( $method == 'up' ? $ver : $ver-1);
