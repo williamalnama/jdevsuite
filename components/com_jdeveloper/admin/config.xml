@@ -2,5 +2,9 @@
 <config>
     <version>0.942</version>
     <devfolder>/Users/asanieyan/Projects/socialengine</devfolder>
-    <migration>1</migration>
+    <projects>
+        <project name="Socialengine">
+            <migration>10</migration>
+        </project>
+    </projects>
 </config>

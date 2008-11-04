@@ -1,15 +1,15 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 	$bar = JToolBar::getInstance('toolbar');
-	JToolBarHelper::title( JText::_( 'Components' ) );	
+	JToolBarHelper::title( JText::_( 'Plugins' ) );	
 
-	$url = urlFor(array('task'=>'create','ext'=>$this->model->type));
-	$js  = sprintf("javascript:if (name = prompt('Enter the %s name')){ document.location = '%s&name='+name}",$this->model->getHumanName(),$url);
-	$bar->appendButton('Link', 'new', sprintf("Add New %s",$this->model->getHumanName()), $js);
-
-	$extensions = $this->model->getList();
+	$url = urlFor(array('task'=>'create','ext'=>'plugin'));
+	$js  = sprintf("javascript:if (name = prompt('Enter the %s name')){ document.location = '%s&name='+name}",'Plugin',$url);
+	$bar->appendButton('Link', 'new', sprintf("Create New %s",'Plugin'), $js);
+	$extensions = $this->extensions;
 
 ?>
+
 	<table class="adminlist" style="clear: both;">
 		<thead>
 			<tr>
@@ -17,11 +17,8 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo jtext('NUM'); ?>
 				</th>
 				<th width='20%'>
-					<?php echo jtext('Name') ?>
-				</th>
-				<th width='10%'>
-					<?php echo jtext('Group') ?>
-				</th>				
+					<?php echo jtext('Plug-in Name') ?>
+				</th>			
 				<th width='1%'>
 					<?php echo jtext('Install') ?>
 				</th>
@@ -34,10 +31,9 @@ defined('_JEXEC') or die('Restricted access');
 			<?php foreach($extensions as $i=>$ext) : ?>
 			<tr>
 				<td align='center'><?php print $i + 1 ?></td>
-				<td align='center'><?php print $ext->humanName ?></td>				
-				<td align='center'><?php print $ext->groupName ?></td>
+				<td align='center'><?php print $ext->getFriendlyName() ?></td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->id)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'install','ext'=>$ext->type,'name'=>$ext->name)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							re-install
 						<?php else : ?>
@@ -46,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>					
 				</td>
 				<td align='center'>
-					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->id)) ?>" ?>
+					<a href="<?php print urlFor(array('task'=>'uninstall','ext'=>$ext->type,'name'=>$ext->name)) ?>" ?>
 						<?php if ( $ext->isInstalled() ) : ?>
 							uninstall
 						<?php else : ?>

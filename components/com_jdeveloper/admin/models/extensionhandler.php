@@ -4,96 +4,114 @@
 
 require dirname(__FILE__).DS.'installer'.DS.'installer.php';
 
+
+
 class ModelExtensionHandler extends JModel
 {
-	public function __construct($args)
+	public function __construct($config)
 	{
+		parent::__construct(array());	
+		$this->config = $config;
+	}	
+	
+	/**
+	 * gets a list of extension (component,plugins,modules) depending on the model state
+	 * @return 
+	 */
+	public function getExtensions()
+	{
+		$class	= $this->getExtensionClass();
+		$type	= strtolower($class);
+		$path   = $this->config->getProjectPath(Inflector::pluralize($type));
+		$items = call_user_func($class.'::getList',$path);
 
-		$this->type   = strtolower( pick(@$args['type'],'component') );
+		$extensions = array();
 		
-
-		
-		$this->config = new ModelConfig();
-		if (is_null($this->type) or !in_array($this->type,array('component','plugin','module')))
-			throw new Exception('please enter a valid extension type');
+		foreach($items as $item) {			
 			
-		require_once $this->type.'.php';
-		
-		parent::__construct($args);	
-	}
-	public function getHumanName()
-	{
-		return ucfirst($this->type);		
-	}
-	public function getFolder()
-	{
-		$folder = $this->config->getDevFolder().DS.$this->type.'s';
-		if ( !JFolder::exists($folder) ) {
-			JFolder::create($folder);
-			JPath::setPermissions($folder,'0777','0777');
+			$extension = new $class($item,$path);
+
+			if ( $extension->showInList() )
+				$extensions[] = $extension;
+			
 		}
-		return $folder;
+		return $extensions;
+
 	}
+	
+	/**
+	 * gets an extension if not exists throws an exception
+	 * @return 
+	 */
+	public function getExtension($name)
+	{		
+		$class	= $this->getExtensionClass();
+		$type	= strtolower($class);
+		$path   = $this->config->getProjectPath(Inflector::pluralize($type));		
+		
+		$extension = new $class($name,$path);
+		return $extension;
+	}	
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getExtensionClass()
+	{
+		$type = $this->getState('extension_type','component');
+		$class  = ucfirst(strtolower($type));
+		if ( !class_exists($class) ) {
+			if ( !class_exists('AbstractJElement') )
+				require dirname(__FILE__).DS.'jelements'.DS.'abstract.php';
+			require dirname(__FILE__).DS.'jelements'.DS.$type.'.php';
+			if ( !class_exists($class) )
+				throw new Exception("$type is not a valid joomla element");
+		}
+		return $class;
+	}
+
+	public function getExtensionType()
+	{
+		return strtolower($this->getExtensionClass());
+	}
+		
+	/**	
+	 * installs an extension
+	 * @return 
+	 * @param $name Object
+	 */
+	public function uninstall($extension)
+	{			
+		$extension->uninstall();
+	
+	}
+			
+	/**	
+	 * installs an extension
+	 * @return 
+	 * @param $name Object
+	 */
+	public function install($extension)
+	{			
+		$extension->install();
+	
+	}
+
+	/**
+	 * 
+	 * @return 
+	 * @param $name Object
+	 */
 	public function create($name)
 	{				
-		
-		
-		if ($this->type == 'component')
-			Component::create($name,$this->getFolder());			
-		else if ($this->type == 'plugin')
-			Plugin::create($name,$this->getFolder());
-		
-	}
-	public function install($name)
-	{			
-		$extension = $this->getExtInstance($name);
-		$extension->install();
-		JPath::setPermissions($this->getFolder(),'0777');		
-	}
-	public function uninstall($name)
-	{		
-		$component = $this->getExtInstance($name);
-		$component->uninstall();		
-		JPath::setPermissions($this->getFolder(),'0777');
-	}
-	public function getComponentList()
-	{
-		$componentFolders = JFolder::folders($this->getFolder());
-		$components = array();
-		foreach($componentFolders as $cFolder)
-		{			
-			try {
-				$component = $this->getExtInstance($cFolder);
-				$components[] = $component;
-			}catch(Exception $e) {
+		$extension = $this->getExtension($name);
+		$extension->create();
 				
-			}
-			
-		}
-		return $components;				
 	}
-	public function getPluginList()
-	{
-		$pluginIds  = JFolder::folders($this->getFolder());
-		$plugins = array();
-		foreach($pluginIds as $id)
-		{
-			$plugins[]= $this->getExtInstance($id);
-		}
-	
-		return $plugins;
-		
-	}
-	public function getList()
-	{		
-		$method = 'get'.$this->type.'list';
-		return $this->$method();
-	}
-	private function getExtInstance($folderName)
-	{
-		$classname = ucfirst($this->type);
-		return new $classname($folderName,$this->getFolder());		
-	}
+
+
+
 
 }
 

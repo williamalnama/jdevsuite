@@ -18,3 +18,4 @@ if ( $latestVersion  = JRequest::getFloat('update') )
 }
 if ( !$updated )
 	require 'core'.DS.'dispatcher.php';
+	

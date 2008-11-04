@@ -1,6 +1,6 @@
 
 <install version="1.5" type="plugin" group="<?php print strtolower($groupName) ?>">
-	<name><?php print $groupName ?> - <?php print $humanName ?></name>
+	<name><?php print $name ?></name>
 	<author></author>
 	<creationDate><?php print $creationDate ?></creationDate>
 	<copyright></copyright>
@@ -9,8 +9,5 @@
 	<authorUrl></authorUrl>
 	<version></version>
 	<description></description>
-	<files>
-		<filename plugin="<?php print $pluginName ?>"><?php print $pluginName ?>.php</filename>
-	</files>	
 	<params/>
 </install>

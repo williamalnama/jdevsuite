@@ -6,8 +6,15 @@ class ControllerConfig  extends ComponentController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->configModel = $this->getModel('config');
-		
+				
+	}
+	public function newProject()
+	{
+		$projectName = JRequest::getVar('project_name');
+		if ( $this->configModel->createProject($projectName) === false )
+			JError::raiseNotice(500,$this->configModel->getError());
+			
+		$this->setRedirect(array('task'=>'default'));
 	}
 	public function reset()
 	{
@@ -32,7 +39,10 @@ class ControllerConfig  extends ComponentController
 							
 			JError::raiseNotice(500,$msg);
 		}
-		$this->assign(array('config'=>$this->configModel,'updater'=>$updater));
+	
+		$this->view->assignRef('configModel',$this->configModel);
+		$this->view->assignRef('updater',$updater);
+	
 		$this->setLayout('default');
 						
 	}

@@ -8,7 +8,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage	
  * @since 		1.5
  */
-class plg<?php print $groupName.$className?> extends JPlugin {
+class plg<?php print $className?> extends JPlugin {
 
 
 

@@ -7,10 +7,7 @@ class PerfomedQueries
 	static function captureLastQuery()
 	{
 		$db = JFactory::getDBO();
-		if ( get_class($db) == 'KDatabase')
-			self::capture($db->getObject()->getQuery(),$db->getObject()->getErrorMsg());
-		else
-			self::capture($db->getQuery(),$db->getErrorMsg());
+		self::capture($db->getQuery(),$db->getErrorMsg());
 	}
 	static function capture($q,$error=null)	
 	{
@@ -92,11 +89,8 @@ class MySQLTable
 		} else 
 			$object = $array;
 		
-		if ( defined('KOOWA') )
-			$tableName = preg_replace('/#_/','',$this->name);
-		else
-			$tableName = $this->name;
-			
+		$tableName = $this->name;
+		
 		$db->insertObject($tableName,$object,$this->pk);
 		
 		PerfomedQueries::captureLastQuery();
