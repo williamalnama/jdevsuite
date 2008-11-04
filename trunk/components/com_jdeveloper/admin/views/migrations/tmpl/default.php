@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
+	defined('_JEXEC') or die('Restricted access');
 	JToolBarHelper::title( JText::_( 'Migrations' ) );	
 	$bar = JToolBar::getInstance('toolbar');
 

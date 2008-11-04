@@ -18,14 +18,18 @@ function urlFor($url=array())
 	if (is_array($url)) {
 
 		global $option;
+		$segments = array();
 		
-		$url['option'] = pick(@$url['option'],$option);
-		$url['controller'] = pick(@$url['controller'],JRequest::getVar('controller'));		
-				
+		$_option = isset($url['option']) ? $url['option'] : $option;
+		$_controller = isset($url['controller']) ? $url['controller'] : JRequest::getVar('controller');
+		
+		unset($url['option']);
+		unset($url['controller']);
+		
 		foreach($url as $k=>$v)
 			$segments[]  = "{$k}={$v}";
 			
-		$query = 'index.php?'.implode("&",$segments);
+		$query = "index.php?option={$_option}&controller={$_controller}&".implode("&",$segments);
 		
 	} else 
 	

@@ -2,14 +2,20 @@
 defined('_JEXEC') or die('Restricted access');
 class ControllerMigrations extends ComponentController
 {
+	public $migrationModel = null;
 	
-
+	public function __construct()
+	{
+		parent::__construct();
+		$this->migrationModel = $this->getModel('migration','',$this->configModel);
+			
+	}
 	public function migrate()
 	{
 		$ver = JRequest::getVar('ver',null);
 		if ( ! is_null($ver) ) {
 			
-				$this->getModel('migration')->migrate($ver);
+				$this->migrationModel->migrate($ver);
 			
 			
 		}
@@ -20,7 +26,8 @@ class ControllerMigrations extends ComponentController
 	}
 	public function default_()
 	{
-		$this->assign(array('migration'=>$this->getModel('migration')));
+		
+		$this->assign(array('migration'=>$this->migrationModel));
 	
 	}	
 	public function addMigration()
@@ -32,13 +39,10 @@ class ControllerMigrations extends ComponentController
 			return;
 		}
 		
-		$migration = $this->getModel('migration')->create($name);
+		$migration = $this->migrationModel->create($name);
 		$this->setRedirect('back','Migration File Created','message');	
 
 	}
-	public function getViewName()
-	{		
-		return 'migrations';	
-	}
+
 	
 }

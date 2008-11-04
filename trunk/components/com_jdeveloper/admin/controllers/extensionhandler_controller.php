@@ -1,53 +1,52 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+
+
+
 class ControllerExtensionHandler extends ComponentController
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$type = JRequest::getVar('ext','component');
-		try {
-			
-			$this->model = $this->getModel('extensionhandler',null,array('type'=>$type));
-			
-		}catch(EXCEPTION $e){
-			
-			
-		}
+		$this->extensionHandlerModel = $this->getModel('extensionhandler','',$this->configModel);
+		$this->extensionHandlerModel->setState('extension_type',JRequest::getVar('ext'));
 
 	}
 	public function create()
 	{
-		$name  = JRequest::getVar('name',null);		
+		$name  = JRequest::getVar('name');	
 		
-		if ( !is_null($name) )
-			$this->model->create($name);
-			
-		$this->setRedirect('back');
-		
+		if ( !is_null($name) )		
+			$this->extensionHandlerModel->create($name);
+	
+		$this->setRedirect(array('ext'=>$this->extensionHandlerModel->getExtensionType()));		
+
 	}
 	public function uninstall()
 	{
-		$ext  = JRequest::getVar('name');
-		$this->model->uninstall($ext);	
-		$this->default_();
-//		$this->setRedirect('back');	
+		$name  = JRequest::getVar('name');			
+		$extension  = $this->extensionHandlerModel->getExtension($name);
+		$this->extensionHandlerModel->uninstall($extension);
+		$this->setRedirect(array('ext'=>$this->extensionHandlerModel->getExtensionType()));
+
 	}
 	public function install()
 	{			
-		$ext  = JRequest::getVar('name');				
-		$this->model->install($ext);
-		$this->default_();
-		//$this->setRedirect('back');
+
+		$name  = JRequest::getVar('name');			
+		$extension  = $this->extensionHandlerModel->getExtension($name);
+		$this->extensionHandlerModel->install($extension);
+		$this->setRedirect(array('ext'=>$this->extensionHandlerModel->getExtensionType()));
 	}
+	
 	public function default_()
-	{					
-		$this->assign(array('model'=>$this->model));
-		$this->setLayout($this->model->type.'_default');	
-	}
-	public function getViewName()
-	{
-		return 'extensionhandler';
+	{			
+
+		$extensions = $this->extensionHandlerModel->getExtensions();
+
+		$this->setLayout($this->extensionHandlerModel->getExtensionType().'_default');
+		$this->view->assignRef('extensions',$extensions);
+		
 	}
 
 

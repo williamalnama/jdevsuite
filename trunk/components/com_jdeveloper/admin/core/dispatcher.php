@@ -13,16 +13,28 @@
 	//load locals
 	JLoader::import('controller',	JPATH_COMPONENT.DS.'core');
 	JLoader::import('view', 		JPATH_COMPONENT.DS.'core');
+	
 	$libFolder = JPATH_COMPONENT.DS.'core'.DS.'lib';
+	
 	foreach(JFolder::files($libFolder) as $file)	
 		require_once $libFolder.DS.$file;
 	
 	//dispatch
-	$controller = JRequest::getVar('controller','migrations');
+	$controller = JRequest::getVar('controller',null);
+	
+	if ( !$controller ) {
+		$controller='migrations';
+		JRequest::setVar('controller','migrations');
+	}
+	
 	JRequest::setVar('view', $controller);
 	
 	if ( JFile::exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'_controller.php') ) 
 	{
+		//make sure the db class is JDatabase
+		$db =& JFactory::getDBO();
+		if ( $db instanceof KDatabase )
+			$db = $db->getObject();
 				
 		JLoader::import( $controller.'_controller' , JPATH_COMPONENT.DS.'controllers' );
 
@@ -38,10 +50,11 @@
 			
 		$controller->execute($task);
 
-		if ( $controller->_doTask != 'display' && !$controller->redirect())
-			$controller->display();
+		if ( $controller->_doTask != 'display' && !$controller->redirect()) {
+			$controller->view->display();
+		}
 				
-		$controller->redirect();
+//		$controller->redirect();
 		
 	} else {
 

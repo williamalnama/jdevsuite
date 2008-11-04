@@ -6,7 +6,6 @@ class ViewMigrations extends ComponentView
 	public function initializeLayout()
 	{
 		
-		
 	}
 	
 	

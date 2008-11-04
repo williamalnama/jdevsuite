@@ -300,7 +300,6 @@ class JInstaller extends JObject
 	 */
 	function install($path=null)
 	{
-
 		if ($path && JFolder::exists($path)) {
 			$this->setPath('source', $path);
 		} else {
@@ -660,6 +659,7 @@ class JInstaller extends JObject
 	 */
 	function parseLanguages($element, $cid=0)
 	{
+
 		// Initialize variables
 		$copyfiles = array ();
 
@@ -685,7 +685,7 @@ class JInstaller extends JObject
 		 * 'languages' Files are copied to JPATH_BASE/language/ folder
 		 */
 		$destination = $client->path.DS.'language';
-
+		
 		/*
 		 * Here we set the folder we are going to copy the files from.
 		 *

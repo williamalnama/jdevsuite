@@ -2,26 +2,76 @@
 
 class ModelMigration extends JModel
 {
-	public function __construct()
+	/**
+	 * configu
+	 */
+	private $config = null;
+	
+	/**
+	 * 
+	 */
+	private $path   = null;
+	
+	public function __construct($config)
 	{
 		parent::__construct(array());
-		$this->config = new ModelConfig();
-			
+		$this->config = $config;
+		$this->path = $this->config->getProjectPath('migrations');
 	}
-	public function getFolder()
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getList()
 	{
+		$migrationFiles = (array) JFolder::files($this->path);
 		
-		$folder = $this->config->getDevFolder().DS.'migrations';
-		if ( !JFolder::exists($folder) ) {
-			JFolder::create($folder);
-			JPath::setPermissions($folder,'0777','0777');
+		foreach($migrationFiles as $index=>$file)
+		{
+			if ( $this->validMigrationFileName($file) )	
+			{
+				$migrations[] = $this->parseFileName($file);
+			}
 		}
-		return $folder;
+		return (array) @$migrations;
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $ver Object
+	 */
+	public function validMigrationFileName($filename)
+	{
+		return preg_match('/^\d+_/',$filename);
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $file Object
+	 */
+	public function parseFileName($file)
+	{
+		$m = new stdClass();		
+		$m->fileName = $file;
+		$m->path	 = $this->path.DS.$file;
+		$m->name	  = preg_replace('/\d+_|\.php/','',$file);
+		$m->className = Inflector::classify($m->name).'Migration';
+		$m->version  = (int) preg_replace('/[^0-9]*/','',$file);
+		return $m;
+	}	
+		
+	/**
+	 * 
+	 * @return 
+	 * @param $targetVer Object
+	 */
 	public function getMigrationFile($ver)
 	{		
 		if (!@$this->files)
-			$this->files = JFolder::files($this->getFolder());
+			$this->files = JFolder::files($this->path);
 		foreach($this->files as $file)
 		{
 			$m = $this->parseFileName($file);
@@ -29,6 +79,28 @@ class ModelMigration extends JModel
 				return $m;
 		}	
 	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function version()
+	{		
+		return $this->config->projectConfigValue('migration');
+	}
+		
+	/**
+	 * 
+	 * @return 
+	 * @param $ver Object
+	 */
+	public function setVersion($ver)
+	{
+		return $this->config->setProjectConfigValue('migration',$ver);
+	}
+	
+
+		
 	public function migrate($targetVer)
 	{
 		$currVer = $this->version();
@@ -58,56 +130,25 @@ class ModelMigration extends JModel
 		$tables = $this->filterTables($db->loadResultArray());
 		$tables = implode("\n\n\n",$db->getTableCreate($tables));
 		$tables = preg_replace('/jos/','#_',$tables);
-		JFile::write($this->getFolder().DS.'schema.sql',$tables);
-		JPath::setPermissions($this->getFolder(),'0777','0777');
+		JFile::write($this->path.DS.'schema.sql',$tables);
+		JPath::setPermissions($this->path,'0777','0777');
 		
 	}
-	public function setVersion($ver)
-	{
-		return $this->config->setMigrationVersion($ver);
-	}
-	public function version()
-	{
-		return $this->config->getMigrationVersion();
-	}
-	public function parseFileName($file)
-	{
-		$m = new stdClass();		
-		$m->fileName = $file;
-		$m->path	 = $this->getFolder().DS.$file;
-		$m->name	  = preg_replace('/\d+_|\.php/','',$file);
-		$m->className = $m->name.'Migration';
-		$m->version  = (int) preg_replace('/[^0-9]*/','',$file);
-		return $m;
-	}	
-	public function getList()
-	{
-		$folder = $this->getFolder();
-		$files = (array) JFolder::files($folder);
-		
-		foreach($files as $index=>$file)
-		{
-			if ( preg_match('/^\d+_/',$file) )	
-			{
-				$migrations[] = $this->parseFileName($file);
-			}
-		}
-		return (array) @$migrations;
-	}
+
+
 	public function create($name)
 	{
-
-		$folder = $this->getFolder();
-			
-		$files = JFolder::files($folder);
-
+		$name = strtolower(preg_replace('/ /','_',$name));
 		$migrationFile  = null;
 		$migrationFiles = array();
+		
+		$folder = $this->path;
+		$files = JFolder::files($folder);
 
 		foreach($files as $index=>$file)
 		{
-			if ( preg_match('/^\d+_/',$file) )			
-				$migrationFiles[] = $file;		
+			if ( preg_match('/^\d+_/',$file) )
+				$migrationFiles[] = $file;
 			
 			$currentFilemigrationName = preg_replace('/\d+_|\.php/','',$file);
 			
@@ -115,6 +156,7 @@ class ModelMigration extends JModel
 				$migrationFile = $file;
 			
 		}
+
 		if ( !$migrationFile )
 		{
 			$newMigrationIndex = (string) count($migrationFiles) + 1;
@@ -125,11 +167,11 @@ class ModelMigration extends JModel
 			
 			$migrationFile = $newMigrationIndex.'_'.$name.'.php';
 			
-			template('migration')->copy($folder.DS.$migrationFile,array('migrationClassName'=>ucfirst($name)));
+			template('migration')->copy($folder.DS.$migrationFile,array('migrationClassName'=>inflector::classify($name)));
 					
 
 		}
-		JPath::setPermissions($this->getFolder(),'0777','0777');		
+		JPath::setPermissions($this->path,'0777','0777');		
 		return $this;		
 	}
 	private function filterTables($tables)
