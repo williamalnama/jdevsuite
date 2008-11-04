@@ -32,7 +32,7 @@
 			<?php foreach($migrations as $m) : ?>
 				<tr>		
 					<td><?php print $m->version ?></td>
-					<td><?php print $m->name ?></td>
+					<td><?php print Inflector::humanize($m->name) ?></td>
 					<td>
 						<a href='<?php print urlFor(array("controller"=>"migrations","ver"=>$m->version,"task"=>"migrate")) ?>'>
 						<?php if ($currentVersion >= $m->version) : ?>

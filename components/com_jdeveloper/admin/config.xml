@@ -3,8 +3,8 @@
     <version>0.95</version>
     <devfolder>/Users/asanieyan/Projects/socialengine</devfolder>
     <projects>
-        <project name="Socialengine">
-            <migration>10</migration>
+        <project name="Anahita Socialengine">
+            <migration>8</migration>
         </project>
     </projects>
 </config>
