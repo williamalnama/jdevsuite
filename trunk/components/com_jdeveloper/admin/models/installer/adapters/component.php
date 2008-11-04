@@ -203,11 +203,12 @@ class JInstallerComponent extends JObject
 		$this->parent->parseFiles($this->manifest->getElementByPath('administration/images'), 1);
 
 		// If there is an install file, lets copy it.
+		*/
 		$installScriptElement =& $this->manifest->getElementByPath('installfile');
 		if (is_a($installScriptElement, 'JSimpleXMLElement')) {
 			// Make sure it hasn't already been copied (this would be an error in the xml install file)
 			if (!file_exists($this->parent->getPath('extension_administrator').DS.$installScriptElement->data()))
-			{
+			{				
 				$path['src']	= $this->parent->getPath('source').DS.$installScriptElement->data();
 				$path['dest']	= $this->parent->getPath('extension_administrator').DS.$installScriptElement->data();
 				if (!$this->parent->copyFiles(array ($path))) {
@@ -248,6 +249,7 @@ class JInstallerComponent extends JObject
 		 *	If Joomla 1.5 compatible, with discreet sql files - execute appropriate
 		 *	file for utf-8 support or non-utf-8 support
 		 */
+		/*
 		$result = $this->parent->parseQueries($this->manifest->getElementByPath('install/queries'));		
 
 		if ($result === false) {
@@ -263,7 +265,7 @@ class JInstallerComponent extends JObject
 				$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('SQLERRORORFILE')." ".$db->stderr(true));
 				return false;
 			}
-		}
+		}*/
 
 		// Time to build the admin menus
 		$this->_buildAdminMenus();
@@ -280,9 +282,11 @@ class JInstallerComponent extends JObject
 		 * method to the installation message.
 		 */
 		if ($this->get('install.script')) {
+			
 			if (is_file($this->parent->getPath('extension_administrator').DS.$this->get('install.script'))) {
-				ob_start();
-				ob_implicit_flush(false);
+				$msg = '';
+//				ob_start();
+//				ob_implicit_flush(false);
 				require_once ($this->parent->getPath('extension_administrator').DS.$this->get('install.script'));
 				if (function_exists('com_install')) {
 					if (com_install() === false) {
@@ -290,8 +294,8 @@ class JInstallerComponent extends JObject
 						return false;
 					}
 				}
-				$msg = ob_get_contents();
-				ob_end_clean();
+//				$msg = ob_get_contents();
+//				ob_end_clean();
 				if ($msg != '') {
 					$this->parent->set('extension.message', $msg);
 				}
@@ -389,8 +393,9 @@ class JInstallerComponent extends JObject
 		if (is_a($uninstallfileElement, 'JSimpleXMLElement')) {
 			// Element exists, does the file exist?
 			if (is_file($this->parent->getPath('extension_administrator').DS.$uninstallfileElement->data())) {
-				ob_start();
-				ob_implicit_flush(false);
+				$msg = '';
+//				ob_start();
+//				ob_implicit_flush(false);
 				require_once ($this->parent->getPath('extension_administrator').DS.$uninstallfileElement->data());
 				if (function_exists('com_uninstall')) {
 					if (com_uninstall() === false) {
@@ -398,13 +403,14 @@ class JInstallerComponent extends JObject
 						$retval = false;
 					}
 				}
-				$msg = ob_get_contents();
-				ob_end_clean();
+//				$msg = ob_get_contents();
+//				ob_end_clean();
 				if ($msg != '') {
 					$this->parent->set('extension.message', $msg);
 				}
 			}
 		}
+	
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -418,6 +424,7 @@ class JInstallerComponent extends JObject
 		 *	If Joomla 1.5 compatible, with discreet sql files - execute appropriate
 		 *	file for utf-8 support or non-utf support
 		 */
+		/*		
 		$result = $this->parent->parseQueries($this->manifest->getElementByPath('uninstall/queries'));
 		if ($result === false) {
 			// Install failed, rollback changes
@@ -432,7 +439,7 @@ class JInstallerComponent extends JObject
 				$retval = false;
 			}
 		}
-
+		*/
 		$this->_removeAdminMenus($row);
 
 		/**
