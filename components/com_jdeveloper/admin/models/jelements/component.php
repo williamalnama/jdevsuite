@@ -97,7 +97,10 @@ class Component extends AbstractJElement
 		}
 		JFile::write( $this->manifestPath(),pretifyXML($root));
 	}	
-	
+	public function initialize()
+	{
+		$this->id = 'com_'.$this->name;		
+	}	
 	
 
 

@@ -71,8 +71,9 @@ function pretifyXML($xml,$level=4)
 
         return implode("\n", $pretty);	
 }
-function copyr($source, $dest)
+function copyr($source, $dest,$exclude=null)
 {
+
     // Simple copy for a file
     if (is_file($source)) {
         return copy($source, $dest);
@@ -96,10 +97,14 @@ function copyr($source, $dest)
         if ($entry == '.' || $entry == '..') {
             continue;
         }
- 
+		
+ 		if ( $exclude && preg_match($exclude,$entry) ) {
+ 			continue;	
+		}
+
         // Deep copy directories
         if ($dest !== "$source/$entry") {
-            copyr("$source/$entry", "$dest/$entry");
+            copyr("$source/$entry", "$dest/$entry",$exclude);
         }
     }
  
