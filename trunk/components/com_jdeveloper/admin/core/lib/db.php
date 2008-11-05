@@ -187,7 +187,7 @@ class MySQLTable
 			
 		if (!preg_match('/^#__/',$this->name))
 			$this->name = $this->db->replacePrefix('#__'.$this->name);
-		
+				
 		$this->indices = array();
 		
 		$this->db->getObject()->execute('SHOW TABLES');
