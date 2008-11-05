@@ -117,6 +117,12 @@ class ModelMigration extends JModel
 			$versions = array_reverse(range($targetVer,$currVer));
 			$method   = 'down';
 		}
+		
+		// 
+		
+		$db =& JFactory::getDBO();
+		$db = new DatabaseProxy($db);
+			
 		foreach($versions as $ver)
 		{
 			$migration = $this->getMigrationFile($ver);
@@ -125,14 +131,33 @@ class ModelMigration extends JModel
 			$migrationClass->$method();
 	
 			$this->setVersion( $method == 'up' ? $ver : $ver-1);
-		}
-		$db = $this->getDBO();
+		}		
+		
+		if ( $db->getObject() instanceof KDatabase)
+			$db = $db->getObject()->getObject();
+		else
+			$db = $db->getObject();
+			
 		$db->execute("SHOW TABLES");
-		$tables = $this->filterTables($db->loadResultArray());
-		$tables = implode("\n\n\n",$db->getTableCreate($tables));
-		$tables = preg_replace('/jos/','#_',$tables);
-		JFile::write($this->path.DS.'schema.sql',$tables);
-		JPath::setPermissions($this->path,'0777','0777');
+
+		$tables = $this->filterTables($db->loadResultArray());		
+		
+		$schema = implode("\n\n\n",$db->getTableCreate($tables));
+		$schema = preg_replace('/jos/','#_',$schema);
+		
+
+		JFile::write($this->path.DS.'schema.sql',$schema);
+		
+		$reverse = array();
+		foreach($tables as $table)
+			$reverse[] = "DROP TABLE ".$table.";";
+		
+		$reverse = implode("\n",$reverse);
+		$reverse = preg_replace('/jos/','#_',$reverse);
+		JFile::write($this->path.DS.'reverse.sql',$reverse);
+		
+		JPath::setPermissions($this->path,'0777','0777');		
+
 		
 	}
 
