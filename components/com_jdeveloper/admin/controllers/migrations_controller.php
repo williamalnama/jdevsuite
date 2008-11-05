@@ -17,7 +17,6 @@ class ControllerMigrations extends ComponentController
 			
 				$this->migrationModel->migrate($ver);
 			
-			
 		}
 		//$this->setRedirect('back');
 ///		$this->assign(array('migrationOutput'=>$output));

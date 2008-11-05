@@ -19,6 +19,7 @@ class ComponentView extends JView
 		JSubMenuHelper::addEntry( 'Plugins',	urlfor(array('ext'=>'plugin','controller'=>'extensionhandler')), 	($ext == 'plugin'));				
 //		JSubMenuHelper::addEntry( 'Languages',	urlfor(array('ext'=>'language','controller'=>'extensionhandler')), 	($ext == 'language'));	
 		JSubMenuHelper::addEntry( 'Packaging',	urlfor(array('controller'=>'package')), 	($controller == 'package'));
+		JSubMenuHelper::addEntry( 'Tasks',	urlfor(array('controller'=>'task')), 	($controller == 'task'));		
 		JSubMenuHelper::addEntry( 'Configuration',	urlfor(array('controller'=>'config')), 	($controller == 'config'));
 		JSubMenuHelper::addEntry( 'About',	urlfor(array('controller'=>'about')), 	($controller == 'about'));		
 	}
