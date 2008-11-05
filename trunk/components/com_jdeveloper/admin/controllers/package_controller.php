@@ -25,6 +25,7 @@ class ControllerPackage  extends ComponentController
 	public function create()
 	{
 		$this->packageModel->package();
+		$this->setRedirect(array('task'=>'default'),'Package created successfully');
 		//package everything	
 	}
 

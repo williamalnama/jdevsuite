@@ -4,7 +4,7 @@
     <devfolder>/Users/asanieyan/Projects/socialengine</devfolder>
     <projects>
         <project name="Anahita Socialengine">
-            <migration>8</migration>
+            <migration>9</migration>
         </project>
     </projects>
 </config>
