@@ -31,10 +31,6 @@
 	
 	if ( JFile::exists(JPATH_COMPONENT.DS.'controllers'.DS.$controller.'_controller.php') ) 
 	{
-		//make sure the db class is JDatabase
-		$db =& JFactory::getDBO();
-		if ( $db instanceof KDatabase )
-			$db = $db->getObject();
 				
 		JLoader::import( $controller.'_controller' , JPATH_COMPONENT.DS.'controllers' );
 

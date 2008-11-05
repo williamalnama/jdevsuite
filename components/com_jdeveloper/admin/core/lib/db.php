@@ -1,14 +1,109 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * JDeveloper Database Proxy Class
+ */
+class DatabaseProxy
+{
+	
+	/**
+	 * 
+	 */
+	private $object = null;
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $object Object
+	 */
+	public function __construct($object)
+	{	
+	 	$this->object = $object;
+	}
+	
+	public function insertObject($tableName,$object,$pk)
+	{
+		$db   = $this->getObject();
+		
+		if ( is_array($object) ) 
+		{
+			$obj = new stdClass();
+			foreach($object as $k=>$v) $obj->$k = $v;								
+			$object = $obj;
+		} 
+				
+		
+		$db->insertObject($tableName,$object,$pk);
+		
+//		PerfomedQueries::captureLastQuery($db);
+		
+		if ($this->object->getErrorMsg())
+			JError::raiseWarning(500,$db);		
+				
+	}
+	/**
+	 * 
+	 * @return 
+	 * @param $q Object
+	 */
+	public function execute()
+	{
+		$args = func_get_args();
+		$db   = $this->object;
+		$q 	  = null;
+		if (count($args) > 1)
+			$q = call_user_func_array('sprintf',$args);
+		else if ( count($args) == 1 )
+			$q = array_shift($args);
+
+		try {	$db->execute($q); }catch(Exception $e){}
+		
+//		if ( $q != 'SHOW TABLES' )
+			PerfomedQueries::capture($q,$db->getErrorMsg());
+		
+		if ($db->getErrorMsg())
+			JError::raiseWarning(500,$db->getErrorMsg());	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $method Object
+	 * @param $args Object
+	 */
+	public function __call($method,array $arguments)
+	{
+		$object = $this->getObject();		
+		return call_user_func_array(array($object, $method), $arguments);		
+		
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getObject()
+	{
+		return $this->object;	
+	}
+	
+	
+}
+
+
 class PerfomedQueries
 {
+	/**
+	 * 
+	 */
 	static $queries = array();
-	static function captureLastQuery()
-	{
-		$db = JFactory::getDBO();
-		self::capture($db->getQuery(),$db->getErrorMsg());
-	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $q Object
+	 * @param $error Object[optional]
+	 */
 	static function capture($q,$error=null)	
 	{
 		$session  = JFactory::getSession();
@@ -17,18 +112,27 @@ class PerfomedQueries
 		if ( !$performedQueries )
 			$performedQueries = array();
 			
-		$db = JFactory::getDBO();
-		$q  = str_replace($db->_table_prefix,'#__',$q);
+		$q  = str_replace('jos','#__',$q);
 		
 		$performedQueries[] = array($q,$error);
 		
 		$session->set('performed_queries',$performedQueries);
 		
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	static function clear()
 	{		
 		JFactory::getSession()->set('performed_queries',array());		
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	static function get()
 	{		
 		$session  = JFactory::getSession();
@@ -42,81 +146,101 @@ class PerfomedQueries
 	
 }
 
+
+			
 function jdb()
-{
+{	
 	$args = func_get_args();
 	$db   = JFactory::getDBO();
-	$q 	  = null;
-	if (count($args) > 1)
-		$q = call_user_func_array('sprintf',$args);
-	else if ( count($args) == 1 )
-		$q = array_shift($args);
-	
-	if ($q) {
+	if ( count($args) > 0 )
+		call_user_method_array('execute',$db,$args);	
 		
-		try {
-			$db->execute($q);
-		}catch(Exception $e){}
-		PerfomedQueries::captureLastQuery();
-		
-		if ($db->getErrorMsg())
-			JError::raiseWarning(500,$db->getErrorMsg());
-	}
 	return $db;
 }
+
+/**
+ * fast of accessing table instance
+ * @return 
+ * @param $name Object
+ */
 function table($name)
 {
 	return new MySQLTable($name);	
 }
+
+/**
+ * 
+ * @return 
+ */
 class MySQLTable
 {
-	public function drop()
-	{
-		if ($this->exists)
-			jdb("DROP TABLE IF EXISTS `%s`",$this->name);
-	}
-	public function insert($array)
-	{
-		if (!$this->exists)
-			return;
-			
-		$db = JFactory::getDBO();
-		if ( is_array($array) ) 
-		{
-			$object = new stdClass();
-			foreach($array as $k=>$v)
-				$object->$k = $v;
-		} else 
-			$object = $array;
-		
-		$tableName = $this->name;
-		
-		$db->insertObject($tableName,$object,$this->pk);
-		
-		PerfomedQueries::captureLastQuery();
-		
-		if ($db->getErrorMsg())
-			JError::raiseWarning(500,$db->getErrorMsg());
-		
-	}
+	/**
+	 * 
+	 * @return 
+	 * @param $tableName Object
+	 */
 	public function __construct($tableName)
 	{
 		$this->name  = $tableName;
 
+		$this->db	 = JFactory::getDBO();		
+			
 		if (!preg_match('/^#__/',$this->name))
-			$this->name = jdb()->replacePrefix('#__'.$this->name);
-
+			$this->name = $this->db->replacePrefix('#__'.$this->name);
+		
 		$this->indices = array();
-		jdb()->execute('SHOW TABLES');
-		$this->exists =  in_array($this->name,jdb()->loadResultArray());
+		
+		$this->db->getObject()->execute('SHOW TABLES');
+
+		$this->exists =  in_array($this->name,$this->db->loadResultArray());
 
 		$this->cols   = array();
 		$this->pk 	  = 'id';
 	}	
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function drop()
+	{
+		if ($this->exists)
+			$this->db->execute("DROP TABLE IF EXISTS `%s`",$this->name);
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $data Object
+	 */
+	public function insert($data)
+	{
+		if (!$this->exists)
+			return;
+							
+		$this->db->execute->insertObject($this->name,$data,$this->pk);
+		
+	}
+	
+	/**	
+	 * 
+	 * @return 
+	 * @param $name Object
+	 * @param $type Object
+	 * @param $options Object[optional]
+	 */
 	public function addCol($name,$type,$options=array())
 	{
 		return $this->addColumn($name,$type,$options);
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $name Object
+	 * @param $type Object
+	 * @param $options Object[optional]
+	 */
 	public function addColumn($name,$type,$options=array())
 	{
 		$col = new MySQLColumn($this,$name,$type,$options);
@@ -126,27 +250,54 @@ class MySQLTable
 		return $col;
 		
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	function dropCols()
 	{
 		$cols = func_get_args();
 		call_user_method_array('dropColumns',$this,$cols);
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function dropColumns()
 	{
 		$cols = func_get_args();		
 		if ($this->exists)
 			foreach($cols as $col)
-				jdb("ALTER TABLE %s DROP COLUMN `%s`",$this->name,$col);
+				$this->db->execute("ALTER TABLE %s DROP COLUMN `%s`",$this->name,$col);
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $key Object
+	 */
 	public function primaryKey($key)
 	{		
 		$this->pk = $key;
 		return $this;	
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $indexName Object
+	 */
 	public function dropIndex($indexName)
 	{
-		jdb("ALTER TABLE `%s` DROP INDEX `%s`",$this->name,$indexName);
+		$this->db->execute("ALTER TABLE `%s` DROP INDEX `%s`",$this->name,$indexName);
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function addIndex()
 	{		
 		$cols = func_get_args();
@@ -195,12 +346,17 @@ class MySQLTable
 				$indexType = 'SPATIAL INDEX';
 				
 			$indexSql = sprintf("CREATE %s `%s` ON `%s` (%s)",$indexType,$indexName,$this->name,$quotedCols);
-			jdb($indexSql);
+			$this->db->execute($indexSql);
 		} 			
 		
 
 			
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function create()
 	{
 		if ( $this->exists )
@@ -225,19 +381,37 @@ class MySQLTable
 					$this->name,
 					$this->cols,
 					$this->indices);
-		jdb($q);
+					
+		$this->db->execute($q);
 		
 	}	
 	
 }
 
+/**
+ * 
+ * @return 
+ * @param $table Object
+ * @param $name Object
+ * @param $type Object
+ * @param $options Object[optional]
+ */
 class MySQLColumn
 {
 	
+	/**
+	 * 
+	 * @return 
+	 * @param $table Object
+	 * @param $name Object
+	 * @param $type Object
+	 * @param $options Object[optional]
+	 */
 	public function __construct($table,$name,$type,$options=array())
 	{
 		$this->table = $table;
 		$this->name = $name;
+		$this->db   = JFactory::getDBO();
 		$this->type = $type;
 		$this->options = $options;
 		
@@ -245,17 +419,32 @@ class MySQLColumn
 			$this->up();
 		
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function up()
 	{
 		$this->update();	
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function update()
 	{
 		if ( !$this->table->exists)
 			return;			
-		jdb("ALTER TABLE `%s` ADD COLUMN %s",$this->table->name,$this->create());
+		$this->db->execute("ALTER TABLE `%s` ADD COLUMN %s",$this->table->name,$this->create());
 		
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
 	public function create()
 	{
 		$options = $this->options;
@@ -289,6 +478,13 @@ class MySQLColumn
 		
 		return $sql;
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 * @param $field Object
+	 * @param $values Object
+	 */
 	public function __call($field,$values)
 	{
 		
