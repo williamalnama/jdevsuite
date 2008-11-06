@@ -4,7 +4,7 @@ $xml  = simplexml_load_file($path);
 $version = $xml->version;
 
 
-run("ant build -Dversion={$version}");
+run("ant release -Dversion={$version}");
 $file    = "com_jdeveloper_{$version}.zip";
 run("svn add packages/releases/{$file}");
 run("svn ci -m ''");
