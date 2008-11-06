@@ -11,6 +11,7 @@ run("svn ci -m ''");
 
 function run($cmd)
 {
-		print $cmd;
+		print $cmd."\n";
+		
 		print `{$cmd}`;
 }
