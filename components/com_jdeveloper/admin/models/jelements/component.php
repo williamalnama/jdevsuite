@@ -59,12 +59,41 @@ class Component extends AbstractJElement
 		parent::updateManifest();
 		
 		$root = $this->manifest();
-				
+		
+		$dom  = dom_import_simplexml($root);
+		
+		
+		foreach(array('install','uninstall','installfile','uninstallfile') as $tag) {
+			if ( isset($root->$tag) ) {
+				$node = dom_import_simplexml($root->$tag);
+				$node->parentNode->removeChild($node);
+			}
+					
+		}
+		
+		if (JFolder::exists($this->path.DS.'install') )
+		{
+			$node = $root->addChild('install')->addChild('sql')->addChild('file','install/install.mysql.utf8.sql');			
+			
+			$node->addAttribute('charset','utf8');
+			$node->addAttribute('driver','mysql');
+						
+			$node = $root->addChild('uninstall')->addChild('sql')->addChild('file','install/uninstall.mysql.utf8.sql');				
+			
+			$node->addAttribute('charset','utf8');
+			$node->addAttribute('driver','mysql');
+			
+			$root->addChild('installfile','install/install.php');
+			$root->addChild('uninstallfile','install/uninstallfile.php');
+		}
+		
+		
 		$subFolders = array('admin','site');
 
-		if ( !$root->name )
+		if ( !isset($root->name) )
 			$root->addChild('name');
-					
+			
+		
 		$root->name = $this->getFriendlyName();
 		
 		if ( !$root->administration )
