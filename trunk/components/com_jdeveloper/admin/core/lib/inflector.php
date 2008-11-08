@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file has been taken from Koowa framework. All rights reserved
+ * KInflector to pluralize and singularize English nouns.
+ * 
+ * @version		$Id:inflector.php 46 2008-03-01 18:39:32Z mjaz $
+ * @category	Koowa
+ * @package		Koowa_Inflector
+ * @copyright	Copyright (C) 2007 - 2008 Joomlatools. All rights reserved.
+ * @license		GNU GPLv2 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+ * @link     	http://www.koowa.org
+
+ * 
+ *
+ * @author		Johan Janssens <johan@joomlatools.org>
+ * @author		Mathias Verraes <mathias@joomlatools.org>
+*/ 
 
 class Inflector
 {
