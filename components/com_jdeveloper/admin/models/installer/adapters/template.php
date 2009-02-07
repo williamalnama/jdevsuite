@@ -76,19 +76,21 @@ class JInstallerTemplate extends JObject
 
 		// Set the template root path
 		$this->parent->setPath('extension_root', $basePath.DS.'templates'.DS.strtolower(str_replace(" ", "_", $this->get('name'))));
-
+//		$this->parent->setPath('extension_root', $basePath.DS.'templates');
 		/*
 		 * If the template directory already exists, then we will assume that the template is already
 		 * installed or another template is using that directory.
 		 */
+/*		
 		if (file_exists($this->parent->getPath('extension_root')) && !$this->parent->getOverwrite()) {
 			JError::raiseWarning(100, JText::_('Template').' '.JText::_('Install').': '.JText::_('Another template is already using directory').': "'.$this->parent->getPath('extension_root').'"');
 			return false;
-		}
+		}*/
 
 		// If the template directory does not exist, lets create it
 		$copyfiles = array();
-		$copyfiles[] = array('source'=>$this->parent->getPath('source'),'destination'=>$this->parent->getPath('extension_root'),'type'=>'folder');		
+		$copyfiles[] = array('src'=>$this->parent->getPath('source'),'dest'=>$this->parent->getPath('extension_root'),'type'=>'folder');		
+
 		$this->parent->copyFiles($copyfiles);
 
 /*	
@@ -135,7 +137,8 @@ class JInstallerTemplate extends JObject
 		} else {
 			$this->parent->set('message', '' );
 		}
-
+		
+		return true;
 		// Lastly, we will copy the manifest file to its appropriate place.
 		if (!$this->parent->copyManifest(-1)) {
 			// Install failed, rollback changes
@@ -164,9 +167,21 @@ class JInstallerTemplate extends JObject
 			JError::raiseWarning(100, JText::_('Template').' '.JText::_('Uninstall').': '.JText::_('Template id is empty, cannot uninstall files'));
 			return false;
 		}
+		$manifest =& $this->parent->getManifest();
+		$client = null;
+		if ( $manifest) {
+			$root =& $manifest->document;
+			$clientId = $root->attributes('client');
+			if ( $clientId )
+				$client =& JApplicationHelper::getClientInfo( $clientId,true);
+			else 
+				$clientId = 0;
+		}
+		if (!$client )
+			$client = JApplicationHelper::getClientInfo( $clientId);
 
 		// Get the template root path
-		$client =& JApplicationHelper::getClientInfo( $clientId );
+		
 		if (!$client) {
 			JError::raiseWarning(100, JText::_('Template').' '.JText::_('Uninstall').': '.JText::_('Invalid application'));
 			return false;
@@ -174,20 +189,20 @@ class JInstallerTemplate extends JObject
 		$this->parent->setPath('extension_root', $client->path.DS.'templates'.DS.$name);
 		$this->parent->setPath('source', $this->parent->getPath('extension_root'));
 
-		$manifest =& $this->parent->getManifest();
 		if (!is_a($manifest, 'JSimpleXML')) {
 			// Make sure we delete the folders
 			JFolder::delete($this->parent->getPath('extension_root'));
 			JError::raiseWarning(100, JTEXT::_('Template').' '.JTEXT::_('Uninstall').': '.JTEXT::_('Package manifest file invalid or not found'));
 			return false;
 		}
-		$root =& $manifest->document;
-
+						
 		// Remove files
+
+		$this->parent->removeFolder($this->parent->getPath('extension_root'));
 		$this->parent->removeFiles($root->getElementByPath('media'), $clientId);
 		$this->parent->removeFiles($root->getElementByPath('languages'));
 		$this->parent->removeFiles($root->getElementByPath('administration/languages'), 1);
-
+		return;
 		// Delete the template directory
 		if (JFolder::exists($this->parent->getPath('extension_root'))) {
 			$retval = JFolder::delete($this->parent->getPath('extension_root'));

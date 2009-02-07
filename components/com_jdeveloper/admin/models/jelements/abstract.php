@@ -193,7 +193,7 @@ abstract class AbstractJElement {
 		
 		$installer->setPath('source',$this->path);
 		$installer->_findManifest();
-				
+
 		$installer->uninstall($this->type,$id);	
 	}	
 	

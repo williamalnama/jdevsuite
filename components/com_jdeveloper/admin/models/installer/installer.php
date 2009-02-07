@@ -991,8 +991,9 @@ class JInstaller extends JObject
 	{
 		if ( is_link($folderName) )
 			JFile::delete($folderName);
-		else
+		else {			
 			JFolder::delete($folderName);
+		}
 		
 	}
 	function removeFiles($element, $cid=0)
