@@ -29,7 +29,20 @@ class JDeveloperTemplate extends AbstractJElement
 	 */
 	public function isInstalled()
 	{
-		return true;
+				
+		$attrs = $this->manifest()->attributes();
+		if ( isset($attrs['client']) && $attrs['client'] == 'administrator' )
+			$clientId = 1;
+		else	
+			$clientId = 0;
+		$client = JApplicationHelper::getClientInfo($clientId);
+		$path 	= $client->path.DS.'templates'.DS.$this->name;
+		
+		if (file_exists($path)) 
+			return $this->name;
+		else	
+			return false;
+
 	}
 	
 	/**
