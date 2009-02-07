@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <version>0.96</version>
-    <devfolder>/Users/asanieyan/Projects/socialengine</devfolder>
-    <projects>
-        <project name="Anahita Socialengine">
-            <migration>7</migration>
-        </project>
-    </projects>
-</config>
+    <!--<devfolder>/Users/asanieyan/Projects/socialengine</devfolder>-->
+    <devfolder>/Users/asanieyan/Projects/eblast</devfolder>
+    <!--   
+        <projects>
+    <project name="Anahita Socialengine">
+        <migration>10</migration>
+    </project>
+    <project name="Photos">
+        <migration>1</migration>
+    </project>
+    <project name="Inviter">
+        <migration>1</migration>
+    </project>
+    <project name="Bingo Welcome"/>
+    <project name="Karma">
+        <migration>1</migration>
+    </project>
+</projects> !-->
+<projects>
+    <project name="Eblast"/>
+</projects>
+    </config>
+    

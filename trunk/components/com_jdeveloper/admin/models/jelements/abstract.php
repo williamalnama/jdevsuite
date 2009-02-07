@@ -39,8 +39,7 @@ abstract class AbstractJElement {
 		$this->root = $root;
 		$this->path = $root.DS.$this->name;
 
-		$this->type = strtolower(str_replace('Extension','',get_class($this)));
-		
+		$this->type = strtolower(str_replace('JDeveloper','',get_class($this)));
 		$this->initialize();
 	}
 	
@@ -62,28 +61,40 @@ abstract class AbstractJElement {
 	 */
 	public function updateManifest()
 	{	
-		$root = $this->manifest();
+		
 		
 		//if the languages folder exists add them to the manifest		
 		if ( JFolder::exists($this->path.DS.'languages') )
 		{	
-			//create language tag in xml
-			if ( isset($root->languages) ) {
-				$langsNode = dom_import_simplexml($root->languages);				
-				$langsNode->parentNode->removeChild($langsNode);
+			$manifest = $this->manifest();
+			$nodes = array(array('root'=>$manifest,'path'=>$this->path.DS.'languages','folder'=>'languages'));
+			if ( JFolder::exists($this->path.DS.'languages'.DS.'admin') ) {
+				$nodes[] = array('root'=>$manifest->administration,'path'=>$this->path.DS.'languages'.DS.'admin','folder'=>'languages'.DS.'admin');
 			}
-			$langsNode = $root->addChild('languages');
-			$langsNode->addAttribute('folder','languages');
-			
-			$files = JFolder::files($this->path.DS.'languages');
-						
-			foreach($files as $file) {
-				$langNode = $langsNode->addChild('language',$file);
-				$tag 	  = substr($file,0,strpos($file,"."));
-				$langNode->addAttribute('tag',$tag);
+			foreach($nodes as $node) {
+				$root = $node['root'];
+				$path = $node['path'];
+				$folder = $node['folder'];
+				
+				//create language tag in xml
+				if ( isset($root->languages) ) {
+					$langsNode = dom_import_simplexml($root->languages);				
+					$langsNode->parentNode->removeChild($langsNode);
+				}
+				$langsNode = $root->addChild('languages');
+				$langsNode->addAttribute('folder',$folder);
+				
+				$files = JFolder::files($path);
+							
+				foreach($files as $file) {
+					$langNode = $langsNode->addChild('language',$file);
+					$tag 	  = substr($file,0,strpos($file,"."));
+					$langNode->addAttribute('tag',$tag);
+				}
 			}
 						
 		}
+		
 
 		//if the media folder exists add them to the manifest		
 		if ( JFolder::exists($this->path.DS.'media') )
