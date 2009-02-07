@@ -8,7 +8,7 @@ run("ant release -Dversion={$version}");
 $file    = "com_jdeveloper_{$version}.zip";
 run("svn add packages/releases/{$file}");
 run("svn ci -m ''");
-
+ 
 function run($cmd)
 {
 		print $cmd."\n";

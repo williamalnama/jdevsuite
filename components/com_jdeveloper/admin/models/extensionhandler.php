@@ -21,10 +21,10 @@ class ModelExtensionHandler extends JModel
 	public function getExtensions()
 	{
 		$class	= $this->getExtensionClass();
-		$type	= strtolower($class);
+		$type	= strtolower(str_replace('JDeveloper','',$class));
 		$path   = $this->config->getProjectPath(Inflector::pluralize($type));
 		$items = call_user_func($class.'::getList',$path);
-
+		
 		$extensions = array();
 		
 		foreach($items as $item) {			
@@ -46,10 +46,11 @@ class ModelExtensionHandler extends JModel
 	public function getExtension($name)
 	{		
 		$class	= $this->getExtensionClass();
-		$type	= strtolower($class);
+		$type	= strtolower(str_replace('JDeveloper','',$class));
 		$path   = $this->config->getProjectPath(Inflector::pluralize($type));		
 		
 		$extension = new $class($name,$path);
+
 		return $extension;
 	}	
 	
@@ -60,11 +61,13 @@ class ModelExtensionHandler extends JModel
 	public function getExtensionClass()
 	{
 		$type = $this->getState('extension_type','component');
-		$class  = ucfirst(strtolower($type));
-		if ( !class_exists($class) ) {
+		$class  = 'JDeveloper'.ucfirst(strtolower($type));
+		$path   = dirname(__FILE__).DS.'jelements'.DS.$type.'.php';
+		
+		if ( !class_exists($class) ) {				
 			if ( !class_exists('AbstractJElement') )
 				require dirname(__FILE__).DS.'jelements'.DS.'abstract.php';
-			require dirname(__FILE__).DS.'jelements'.DS.$type.'.php';
+			require $path;
 			if ( !class_exists($class) )
 				throw new Exception("$type is not a valid joomla element");
 		}
@@ -73,7 +76,8 @@ class ModelExtensionHandler extends JModel
 
 	public function getExtensionType()
 	{
-		return strtolower($this->getExtensionClass());
+		$type = str_replace('JDeveloper','',$this->getExtensionClass());
+		return strtolower($type);
 	}
 		
 	/**	

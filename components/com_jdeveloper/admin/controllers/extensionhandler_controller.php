@@ -33,7 +33,7 @@ class ControllerExtensionHandler extends ComponentController
 	public function install()
 	{			
 
-		$name  = JRequest::getVar('name');			
+		$name  = JRequest::getVar('name');
 		$extension  = $this->extensionHandlerModel->getExtension($name);
 		$this->extensionHandlerModel->install($extension);
 		$this->setRedirect(array('ext'=>$this->extensionHandlerModel->getExtensionType()));

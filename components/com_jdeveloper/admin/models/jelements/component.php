@@ -1,6 +1,6 @@
 <?php
 
-class Component extends AbstractJElement
+class JDeveloperComponent extends AbstractJElement
 {
 	
 	/**

@@ -69,7 +69,7 @@ class ModelPackage extends JModel
 			$pluginNode->addAttribute('folder','plugins');
 			JFolder::create($dest.DS."plugins");
 			foreach ($plugins as &$plugin)
-			{			
+			{
 				 $plugin =& $this->extHandler->getExtension($plugin);
 				 $plugin->updateManifest();
 				 $pluginDest = $dest.DS."plugins".DS.$plugin->groupName.'_'.$plugin->plgName;				 
@@ -79,7 +79,6 @@ class ModelPackage extends JModel
 				 
 				 $plg->addAttribute('group',$plugin->groupName);				 
 				 $plg->addAttribute('name',$plugin->plgName);
-
 			}
 			
 			JFile::write($dest.DS.'manifest.xml',pretifyXML($manifest));	

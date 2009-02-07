@@ -686,6 +686,7 @@ class JInstaller extends JObject
 		 */
 		$destination = $client->path.DS.'language';
 		
+		
 		/*
 		 * Here we set the folder we are going to copy the files from.
 		 *
