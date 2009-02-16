@@ -2,9 +2,9 @@
 <config>
     <version>0.97</version>
     <!--<devfolder>/Users/asanieyan/Projects/socialengine</devfolder>-->
-    <devfolder>/Users/asanieyan/Projects/eblast</devfolder>
-    <!--   
-        <projects>
+    <devfolder>/Users/asanieyan/Projects/eblast_trunk</devfolder>
+    <!--
+                                                            <projects>
     <project name="Anahita Socialengine">
         <migration>10</migration>
     </project>
@@ -18,9 +18,13 @@
     <project name="Karma">
         <migration>1</migration>
     </project>
-</projects> !-->
-<projects>
     <project name="Eblast"/>
+</projects>
+   -->
+<projects>
+    <project name="Eblast">
+        <migration>1</migration>
+    </project>
 </projects>
     </config>
     
