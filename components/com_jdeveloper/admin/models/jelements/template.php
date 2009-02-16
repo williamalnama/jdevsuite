@@ -30,16 +30,20 @@ class JDeveloperTemplate extends AbstractJElement
 	public function isInstalled()
 	{
 				
-		$attrs = $this->manifest()->attributes();
+		$attrs = $this->manifest()->attributes();		
+		$folderName = $this->manifest()->name;
+		$folderName = JFilterInput::clean($folderName, 'cmd');		
+		$folderName = strtolower(str_replace(" ", "_", $folderName));
+		
 		if ( isset($attrs['client']) && $attrs['client'] == 'administrator' )
 			$clientId = 1;
 		else	
 			$clientId = 0;
 		$client = JApplicationHelper::getClientInfo($clientId);
-		$path 	= $client->path.DS.'templates'.DS.$this->name;
-		
+		$path 	= $client->path.DS.'templates'.DS.$folderName;
+
 		if (file_exists($path)) 
-			return $this->name;
+			return $folderName;
 		else	
 			return false;
 
