@@ -22,7 +22,7 @@ class DatabaseProxy
 	 	$this->object = $object;
 	}
 	
-	public function insertObject($tableName,$object,$pk)
+	public function insertObject($tableName,$object,$pk=null)
 	{
 		$db   = $this->getObject();
 		
@@ -34,12 +34,14 @@ class DatabaseProxy
 		} 
 				
 		
-		$db->insertObject($tableName,$object,$pk);
+		$ret = $db->insertObject($tableName,$object,$pk);
 		
 //		PerfomedQueries::captureLastQuery($db);
 		
 		if ($this->object->getErrorMsg())
-			JError::raiseWarning(500,$db);		
+			JError::raiseWarning(500,$db);	
+			
+		return $ret;	
 				
 	}
 	/**
