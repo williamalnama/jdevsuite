@@ -121,7 +121,7 @@ class ModelMigration extends JModel
 		// 
 		
 		$db =& JFactory::getDBO();
-		$db = new DatabaseProxy($db);
+		$db = new DatabaseProxy( (!$db instanceof JDatabase) ? $db->getObject() : $db);
 			
 		foreach($versions as $ver)
 		{
