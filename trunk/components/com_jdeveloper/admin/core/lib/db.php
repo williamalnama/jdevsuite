@@ -185,7 +185,7 @@ class MySQLTable
 	{
 		$this->name  = $tableName;
 
-		$this->db	 = JFactory::getDBO();		
+		$this->db	 = new DatabaseProxy(JFactory::getDBO());		
 			
 		if (!preg_match('/^#__/',$this->name))
 			$this->name = $this->db->replacePrefix('#__'.$this->name);
@@ -413,7 +413,7 @@ class MySQLColumn
 	{
 		$this->table = $table;
 		$this->name = $name;
-		$this->db   = JFactory::getDBO();
+		$this->db   = $table->db;
 		$this->type = $type;
 		$this->options = $options;
 		

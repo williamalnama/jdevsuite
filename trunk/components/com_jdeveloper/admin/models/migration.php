@@ -121,7 +121,7 @@ class ModelMigration extends JModel
 		// 
 		
 		$db =& JFactory::getDBO();
-		$db = new DatabaseProxy( (!$db instanceof JDatabase) ? $db->getObject() : $db);
+//		$db = new DatabaseProxy( (!$db instanceof JDatabase) ? $db->getObject() : $db);
 			
 		foreach($versions as $ver)
 		{
@@ -132,11 +132,11 @@ class ModelMigration extends JModel
 	
 			$this->setVersion( $method == 'up' ? $ver : $ver-1);
 		}		
-		
+/*		
 		if ( $db->getObject() instanceof KDatabase)
 			$db = $db->getObject()->getObject();
 		else
-			$db = $db->getObject();
+			$db = $db->getObject();*/
 			
 		$db->execute("SHOW TABLES");
 
