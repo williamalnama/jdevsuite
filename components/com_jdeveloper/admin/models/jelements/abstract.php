@@ -98,7 +98,7 @@ abstract class AbstractJElement {
 
 		//if the media folder exists add them to the manifest		
 		if ( JFolder::exists($this->path.DS.'media') )
-		{	
+		{	$root = $this->manifest();
 			//create media tag in xml
 			if ( isset($root->media) ) {
 				$mediaNode = dom_import_simplexml($root->media);				
