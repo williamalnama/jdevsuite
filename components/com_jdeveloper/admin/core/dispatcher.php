@@ -46,7 +46,7 @@
 			
 		$controller->execute($task);
 
-		if ( $controller->_doTask != 'display' && !$controller->redirect()) {
+		if ( $controller->view && ($controller->_doTask != 'display' && !$controller->redirect())) {
 			$controller->view->display();
 		}
 				
