@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-class ControllerPackage  extends ComponentController
+class JDevControllerPackage  extends ComponentController
 {	
 
 	/**

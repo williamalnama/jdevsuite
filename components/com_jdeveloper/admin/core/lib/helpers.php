@@ -1,43 +1,5 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
-function JText($str)
-{
-	return JText::_($str);	
-}
 
-function pick()
-{
-	$args = func_get_args();	
-	foreach($args as $arg)
-		if (!is_null($arg))
-			return $arg;
-}
-
-function urlFor($url=array())
-{		
-	if (is_array($url)) {
-
-		global $option;
-		$segments = array();
-		
-		$_option = isset($url['option']) ? $url['option'] : $option;
-		$_controller = isset($url['controller']) ? $url['controller'] : JRequest::getVar('controller');
-		
-		unset($url['option']);
-		unset($url['controller']);
-		
-		foreach($url as $k=>$v)
-			$segments[]  = "{$k}={$v}";
-			
-		$query = "index.php?option={$_option}&controller={$_controller}&".implode("&",$segments);
-		
-	} else 
-	
-		$query = $url;
-		
-	return JRoute::_($query,false);
-	
-}
 function pretifyXML($xml,$level=4)
 {
 	

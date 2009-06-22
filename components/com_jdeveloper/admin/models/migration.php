@@ -1,6 +1,6 @@
 <?php
 
-class ModelMigration extends JModel
+class JDeveloperModelMigration extends KModelDefault
 {
 	/**
 	 * configu
@@ -15,7 +15,7 @@ class ModelMigration extends JModel
 	public function __construct($config)
 	{
 		parent::__construct(array());
-		$this->config = $config;
+		$this->config = KFactory::get('admin::com.jdeveloper.model.config');
 		$this->path = $this->config->getProjectPath('migrations');
 	}
 
@@ -25,16 +25,16 @@ class ModelMigration extends JModel
 	 */
 	public function getList()
 	{
-		$migrationFiles = (array) JFolder::files($this->path);
-		
-		foreach($migrationFiles as $index=>$file)
+		$files = (array) JFolder::files($this->path);
+		$migrations = array();
+		foreach($files as $file)
 		{
 			if ( $this->validMigrationFileName($file) )	
 			{
 				$migrations[] = $this->parseFileName($file);
 			}
 		}
-		return (array) @$migrations;
+		return $migrations;
 	}
 	
 	/**
@@ -58,7 +58,7 @@ class ModelMigration extends JModel
 		$m->fileName = $file;
 		$m->path	 = $this->path.DS.$file;
 		$m->name	  = preg_replace('/\d+_|\.php/','',$file);
-		$m->className = Inflector::camelize($m->name).'Migration';
+		$m->className = KInflector::camelize($m->name).'Migration';
 		$m->version  = (int) preg_replace('/[^0-9]*/','',$file);
 		return $m;
 	}	

@@ -1,6 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-class ControllerTask extends ComponentController
+class JDevControllerTask extends ComponentController
 {
 	public $taskModel = null;
 	
