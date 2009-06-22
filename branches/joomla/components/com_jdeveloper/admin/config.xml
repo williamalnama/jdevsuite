@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <version>0.973</version>
+    <version>0.974</version>
+    <devfolder>/Users/asanieyan/Projects/socialengine</devfolder>
+    <!--    <devfolder>/Users/asanieyan/Projects/eblast_trunk</devfolder>-->
     <projects>
-        <project name="Noirbonbon"/>
+        <project name="Anahita Socialengine">
+            <migration>20</migration>
+        </project>
+        <project name="Photos">
+            <migration>2</migration>
+        </project>
+        <project name="Inviter">
+            <migration>1</migration>
+        </project>
+        <project name="Bingo Welcome"/>
+        <project name="Karma">
+            <migration>1</migration>
+        </project>
+        <project name="Eblast"/>
+        <project name="Bingo"/>
+        <project name="Anahita_socialengine"/>
     </projects>
-    <devfolder>/Users/asanieyan/Projects/noirbonbon</devfolder>
-</config>
+    <!--
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <projects>
+    <project name="Eblast">
+        <migration>1</migration>
+    </project>
+</projects>-->
+    </config>
+    

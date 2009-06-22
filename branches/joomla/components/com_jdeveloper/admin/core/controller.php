@@ -2,7 +2,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class ComponentController extends JController
+class ComponentController extends AnControllerDefault
 {
 	/**
 	 * configuration service
@@ -14,16 +14,17 @@ class ComponentController extends JController
 	 */
 	public $view		= null;
 	
-	public function __construct()
+	public function __construct($options=array())
 	{
-		parent::__construct();
+		parent::__construct($options);
 		
-		$this->configModel =  $this->getModel('config');
+//		$this->configModel =  $this->getModel('config');
 		
-	    $this->view		   =& $this->getView($this->getViewName(),'html');
+//	    $this->view		   =& $this->getView($this->getViewName(),'html');
 		
 		//if dev folder doesn't exists redirect user to the config to create
 		//new dev folder
+		/*
 		if ( !$this->configModel->devFolderExists() && strtolower(JRequest::getString('controller')) != 'config' ){			
 			$this->setRedirect(array('controller'=>'config'));
 		} else {	
@@ -42,8 +43,7 @@ class ComponentController extends JController
 			
 			$this->view->assignRef('currentProject',$currentProject);
 			$this->view->assignRef('projects',$projects);
-
-		}
+		}*/
 			
 	}
 	/**

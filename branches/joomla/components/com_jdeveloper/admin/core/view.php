@@ -1,10 +1,10 @@
 <?php 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
-class ComponentView extends JView
+
+class ComponentView extends AnViewHtml
 {
-	public function defaultLayout()
+
+	public function _defaultLayout()
 	{
 		global $option;
 

@@ -1,15 +1,20 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
-class ControllerMigrations extends ComponentController
+
+class JDeveloperControllerMigration extends ComponentController
 {
 	public $migrationModel = null;
 	
-	public function __construct()
+	public function __construct($options=array())
 	{
-		parent::__construct();
-		$this->migrationModel = $this->getModel('migration','',$this->configModel);
-			
+		parent::__construct($options);
+		$this->migrationModel = KFactory::get('site::com.jdeveloper.model.migration');
 	}
+	
+	public function display()
+	{				
+		parent::display();
+	}
+	
 	public function migrate()
 	{
 		$ver = JRequest::getVar('ver',null);

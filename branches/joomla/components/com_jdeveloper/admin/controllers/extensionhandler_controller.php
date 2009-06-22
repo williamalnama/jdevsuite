@@ -1,9 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-
-
-class ControllerExtensionHandler extends ComponentController
+class JDevControllerExtensionHandler extends ComponentController
 {
 	public function __construct()
 	{

@@ -1,9 +1,19 @@
 <?php 
-// no direct access
+    // no direct access
 	defined('_JEXEC') or die('Restricted access');
+	koowa::import('lib.joomla.filesystem.file');
+	Koowa::import('admin::com.jdeveloper.core.controller');
+	Koowa::import('admin::com.jdeveloper.core.view');
 
-
-			
+	$libFolder = JPATH_COMPONENT.DS.'core'.DS.'lib';
+	
+	foreach(JFolder::files($libFolder) as $file)	
+		require_once $libFolder.DS.$file;
+		
+	$engine = new AnDispatcher(array('name'=>array('prefix'=>'JDeveloper')));
+	$engine->dispatch(array('default_view'=>'migrations'));
+	
+	/*
 	//load jcore
 	jimport('joomla.filesystem.file');
 	jimport('joomla.application.component.model');
@@ -14,10 +24,7 @@
 	JLoader::import('controller',	JPATH_COMPONENT.DS.'core');
 	JLoader::import('view', 		JPATH_COMPONENT.DS.'core');
 	
-	$libFolder = JPATH_COMPONENT.DS.'core'.DS.'lib';
-	
-	foreach(JFolder::files($libFolder) as $file)	
-		require_once $libFolder.DS.$file;
+
 	
 	//dispatch
 	$controller = JRequest::getVar('controller',null);
@@ -57,4 +64,4 @@
 		JError::raiseError(400,"Invalid Controller {$controller}");
 	}
 	
-
+*/

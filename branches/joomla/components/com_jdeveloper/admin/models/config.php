@@ -1,6 +1,8 @@
 <?php 
+
 jimport('joomla.utilities.simplexml');
-class ModelConfig extends JModel
+
+class JDeveloperModelConfig extends KModelDefault
 {
 	public $defaultDevFolder  = null;
 	public $xmlConfig 		  = null;
@@ -8,7 +10,7 @@ class ModelConfig extends JModel
 	
 	static $instance 		  = null;
 	
-	public function __construct() 	
+	public function __construct($options=array()) 	
 	{		
 		parent::__construct(array());
 		$this->xmlConfig =  (simplexml_load_file(JPATH_COMPONENT.DS.'config.xml'));
@@ -139,7 +141,7 @@ class ModelConfig extends JModel
 			return false;
 		}
 		
-		$projectFolderName = Inflector::underscore(Inflector::camelize($projectName));
+		$projectFolderName = KInflector::underscore(Inflector::camelize($projectName));
 		JFolder::create($this->getDevPath($projectFolderName));
 	}
 	
@@ -156,7 +158,7 @@ class ModelConfig extends JModel
 			foreach($folders as $folder)
 			{
 				$project = new stdClass();
-				$project->name   = Inflector::titlize($folder);
+				$project->name   = ucfirst($folder);
 				$project->folder = $folder;
 				$project->path   = $this->getDevPath($folder);
 				$projects[] = $project;
