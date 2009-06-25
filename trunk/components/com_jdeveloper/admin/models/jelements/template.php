@@ -84,11 +84,13 @@ class JDeveloperTemplate extends AbstractJElement
 		
 		foreach($files as $f) 
 		{			
+			if (!$this->validFileName($f)) continue;			
 			$fileNodde =  $filesNode->addChild('filename',$f);
 
 		}
 		foreach($folders as $f) 
 		{
+			if (!$this->validFileName($f)) continue;
 			$folderNode =  $filesNode->addChild('folder',$f);
 		}
 		JFile::write( $this->manifestPath(),pretifyXML($root));

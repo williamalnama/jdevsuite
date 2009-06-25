@@ -121,7 +121,7 @@ class JDeveloperModule extends AbstractJElement
 			//skip the manifest.xml file
 			if ( $f == $this->modName.'.xml')
 				continue;
-			
+			if (!$this->validFileName($f)) continue;
 			$fileNodde =  $filesNode->addChild('filename',$f);
 			if ($f == $this->modName.'.php')
 				$fileNodde->addAttribute('module',$this->modName);
@@ -129,6 +129,7 @@ class JDeveloperModule extends AbstractJElement
 		}
 		foreach($folders as $f) 
 		{
+			if (!$this->validFileName($f)) continue;
 			$folderNode =  $filesNode->addChild('folder',$f);
 			$this->moduleFolders[] = $f;			
 		}

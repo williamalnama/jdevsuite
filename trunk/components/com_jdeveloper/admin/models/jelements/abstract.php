@@ -32,7 +32,11 @@ abstract class AbstractJElement {
 	 */
 	public $type = null;
 	
-
+	public function validFileName($fName)
+	{
+		return !preg_match('/^\./',$fName);
+	}
+	
 	final public function __construct($name,$root)
 	{
 		$this->name = strtolower(preg_replace('/ /','_',$name));

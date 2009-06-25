@@ -152,11 +152,11 @@ class JDeveloperComponent extends AbstractJElement
 			$filesNode->addAttribute('folder',$sFolder);
 
 			foreach($files as $f) {
-				if (!preg_match('/^\./',$f))
+				if ($this->validFileName($f))
 					$filesNode->addChild('file',$f);
 			}
 			foreach($folders as $f) {		
-				if (!preg_match('/^\./',$f))
+				if ($this->validFileName($f))
 					$filesNode->addChild('folder',$f);
 			}	
 		}

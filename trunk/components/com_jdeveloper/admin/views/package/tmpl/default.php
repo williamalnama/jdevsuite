@@ -18,8 +18,8 @@
 			}
 			if (name = prompt("Please enter a the package name")) {
 				$('package_name').value = name;
-				$('package').submit();
 			}
+			$('package').submit();			
 				
 		}			
 	</script>
