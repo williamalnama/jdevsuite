@@ -286,11 +286,11 @@ class JInstallerComponent extends JObject
 		 */
 		if ($this->get('install.script')) {
 			
-			if (is_file($this->parent->getPath('source').DS.$this->get('install.script'))) {
+			if (is_file($this->parent->getPath('source').DS.'admin'.DS.$this->get('install.script'))) {
 				$msg = '';
 				ob_start();
 				ob_implicit_flush(false);
-				require_once ($this->parent->getPath('source').DS.$this->get('install.script'));
+				require_once ($this->parent->getPath('source').DS.'admin'.DS.$this->get('install.script'));
 				if (function_exists('com_install')) {
 					if (com_install() === false) {
 						$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Custom install routine failure'));
@@ -395,11 +395,11 @@ class JInstallerComponent extends JObject
 		$uninstallfileElement =& $this->manifest->getElementByPath('uninstallfile');
 		if (is_a($uninstallfileElement, 'JSimpleXMLElement')) {
 			// Element exists, does the file exist?
-			if (is_file($this->parent->getPath('source').DS.$uninstallfileElement->data())) {
+			if (is_file($this->parent->getPath('source').DS.'admin'.DS.$uninstallfileElement->data())) {
 				$msg = '';
 				ob_start();
 				ob_implicit_flush(false);
-				require_once ($this->parent->getPath('source').DS.$uninstallfileElement->data());
+				require_once ($this->parent->getPath('source').DS.'admin'.DS.$uninstallfileElement->data());
 				if (function_exists('com_uninstall')) {
 					if (com_uninstall() === false) {
 						JError::raiseWarning(100, JText::_('Component').' '.JText::_('Uninstall').': '.JText::_('Custom Uninstall script unsuccessful'));

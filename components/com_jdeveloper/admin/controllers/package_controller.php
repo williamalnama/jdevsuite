@@ -38,7 +38,8 @@ class ControllerPackage  extends ComponentController
 				$extensions[] = array('type'=>$t,'name'=>$n);
 			}
 		}
-		$this->packageModel->package($extensions);
+		$name = JRequest::getVar('package_name');
+		$this->packageModel->package($extensions,$name);
 		$this->setRedirect(array('task'=>'default'),'Package created successfully');
 	}
 

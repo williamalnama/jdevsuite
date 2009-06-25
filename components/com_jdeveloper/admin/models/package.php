@@ -35,7 +35,7 @@ class ModelPackage extends JModel
 		
 	}
 	
-	public function package($extensions)
+	public function package($extensions,$name='')
 	{
 		if (!count($extensions))
 			return;
@@ -46,9 +46,18 @@ class ModelPackage extends JModel
 		$this->extHandler->setState('extension_type',$mainExt['type']);
 		$extension = $this->extHandler->getExtension($mainExt['name']);
 		$extension->updateManifest();
-		$dest = $this->path.DS.$extension->packageName();
-		$zipDest = $this->path.DS.$extension->packageName();
+
+		$dest 	 = $this->path.DS.$extension->packageName();
+
+		if ($name && strlen($name))
+			$dest = $this->path.DS.$name;
+		else 
+			$dest = $this->path.DS.$extension->packageName();
+		
+		$zipDest = $dest;
+		
 		$src  = $extension->path;
+		
 		JFolder::create($dest);
 		copyr($src,$dest,'/^\./');
 		

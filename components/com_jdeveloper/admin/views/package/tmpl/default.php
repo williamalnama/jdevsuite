@@ -16,11 +16,15 @@
 				alert('select one package');
 				return;				
 			}
-			$('package').submit();
+			if (name = prompt("Please enter a the package name")) {
+				$('package_name').value = name;
+				$('package').submit();
+			}
+				
 		}			
 	</script>
 	<form id="package" method="post">
-	
+	<input type="hidden" id="package_name" name="package_name" />
 	<input type="hidden" name="option" value="com_jdeveloper">
 	<input type="hidden" name="conroller" value="package">
 	<input type="hidden" name="task" value="package">
