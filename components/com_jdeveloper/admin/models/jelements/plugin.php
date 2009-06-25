@@ -126,6 +126,8 @@ class JDeveloperPlugin extends AbstractJElement
 			if ( $f == $this->plgName.'.xml')
 				continue;
 			
+			if (!$this->validFileName($f)) continue;
+			
 			$fileNodde =  $filesNode->addChild('filename',$f);
 			if ($f == $this->plgName.'.php')
 				$fileNodde->addAttribute('plugin',$this->plgName);
@@ -133,6 +135,7 @@ class JDeveloperPlugin extends AbstractJElement
 		}
 		foreach($folders as $f) 
 		{
+			if (!$this->validFileName($f)) continue;
 			$folderNode =  $filesNode->addChild('folder',$f);
 			$this->pluginFiles[] = $f;			
 		}
