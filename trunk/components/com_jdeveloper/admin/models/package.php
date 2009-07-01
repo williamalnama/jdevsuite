@@ -90,7 +90,7 @@ class ModelPackage extends JModel
 		}
 		
 		$files = JFolder::files($dest,'.',true,true);
-		JArchive::create($zipDest,$files,'tar','',$this->path,true,true);
+		JArchive::create($zipDest,$files,'zip','',$this->path,true,true);
 		JFolder::delete($dest);
 		
 		return;
@@ -153,7 +153,7 @@ class ModelPackage extends JModel
 		
 		$files = JFolder::files($dest,'.',true,true);
 
-		JArchive::create($zipDest,$files,'tar','',$this->path,true,true);
+		JArchive::create($zipDest,$files,'gz','',$this->path,true,true);
 		JFolder::delete($dest);	
 		
 	}

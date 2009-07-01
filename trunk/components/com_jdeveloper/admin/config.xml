@@ -5,7 +5,7 @@
     <!--    <devfolder>/Users/asanieyan/Projects/eblast_trunk</devfolder>-->
     <projects>
         <project name="Anahita Socialengine">
-            <migration>24</migration>
+            <migration>25</migration>
         </project>
         <project name="Photos">
             <migration>3</migration>
@@ -22,7 +22,7 @@
         <project name="Discussions"/>
     </projects>
     <!--
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <projects>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <projects>
     <project name="Eblast">
         <migration>1</migration>
     </project>
